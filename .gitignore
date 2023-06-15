@@ -1,0 +1,6 @@
+*__pycache__
+*dist
+*build
+*.vscode
+*y2mate_api.egg-info
+terminal.py

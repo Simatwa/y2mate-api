@@ -1,0 +1,160 @@
+{
+    "status": "ok",
+    "mess": "",
+    "page": "detail",
+    "vid": "POPoAjWFkGg",
+    "extractor": "youtube",
+    "title": "IP Subnetting from CIDR Notations",
+    "t": 961,
+    "a": "Joshua Butcher",
+    "links": {
+        "mp4": {
+            "135": {
+                "size": "14 MB",
+                "f": "mp4",
+                "q": "480p",
+                "q_text": "480p (.mp4)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqkwx3WftQ99R4mbX1dYceffBBnN/7"
+            },
+            "18": {
+                "size": "MB",
+                "f": "mp4",
+                "q": "360p",
+                "q_text": "360p (.mp4)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqkwxwV/tQ99R4mbX1dYceffBBnN/7"
+            },
+            "133": {
+                "size": "12.1 MB",
+                "f": "mp4",
+                "q": "240p",
+                "q_text": "240p (.mp4)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqkwxxVftcutx2gKrxdp8Bf/RYg9v3SA=="
+            },
+            "160": {
+                "size": "11.7 MB",
+                "f": "mp4",
+                "q": "144p",
+                "q_text": "144p (.mp4)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqkwxyVf9cutx2gKrxdp8Bf/RYg9v3SA=="
+            },
+            "3gp@144p": {
+                "size": "MB",
+                "f": "3gp",
+                "q": "144p",
+                "q_text": "144p (.3gp)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhIY91wxyVf9cutx2gKrxdp8Bf/RYg9v3SA=="
+            },
+            "auto": {
+                "size": "",
+                "f": "mp4",
+                "q": "auto",
+                "selected": "selected",
+                "q_text": "MP4 auto quality",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqkwwiFL9Dutx2gKrxdp8Bf/RYg9v3SA=="
+            }
+        },
+        "mp3": {
+            "140": {
+                "size": "10.9 MB",
+                "f": "m4a",
+                "q": ".m4a",
+                "q_text": ".m4a (128kbps)",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNhuxgxyU/NQ99R4mbX1dYceffBBnN/7"
+            },
+            "mp3128": {
+                "size": "10.9 MB",
+                "f": "mp3",
+                "q": "128kbps",
+                "q_text": "MP3 - 128kbps",
+                "k": "jdBGXoDkkJGhaZWhu6vVo8evAl7j4qQmhNgqlAxyU/NQ99R4mbX1dYceffBBnN/7"
+            }
+        }
+    },
+    "related": [
+        {
+            "title": "Related Videos",
+            "contents": [
+                {
+                    "v": "ecCuyq-Wprc",
+                    "t": "subnetting is simple"
+                },
+                {
+                    "v": "t5xYI0jzOf4",
+                    "t": "Subnetting Demystified - Part 5 CIDR Notation"
+                },
+                {
+                    "v": "uyRtYUg6bnw",
+                    "t": "16. How to Find the Number of Subnets  Valid Hosts"
+                },
+                {
+                    "v": "z07HTSzzp3o",
+                    "t": "IPv4, CIDR, and VPC Subnets Made Simple!"
+                },
+                {
+                    "v": "bgamrwBxejc",
+                    "t": "Understanding CIDR notation"
+                },
+                {
+                    "v": "a84XIopJFXs",
+                    "t": "Subnetting Cisco CCNA -Part 1 The Magic Number"
+                },
+                {
+                    "v": "iDiGBIOq7ec",
+                    "t": "CIDR Notation"
+                },
+                {
+                    "v": "LIzTo6e4FgY",
+                    "t": "IP Addresses Explained | Cisco CCNA 200-301"
+                },
+                {
+                    "v": "rs39FWDhzDs",
+                    "t": "IP Addresses and Subnetting"
+                },
+                {
+                    "v": "XQ3T14SIlV4",
+                    "t": "IPv4 Addressing Lesson 2: Network IDs and Subnet Masks"
+                },
+                {
+                    "v": "qulRjRFavJI",
+                    "t": "What is subnetting ? How subnetting works ? What is subnet mask? | Explained with real-life exmples"
+                },
+                {
+                    "v": "RLCd5u0sjoU",
+                    "t": "VLSM Subnetting - subnetting a subnet"
+                },
+                {
+                    "v": "OqsXzkXfwRw",
+                    "t": "IP addressing and Subnetting | CIDR | Subnet | TechTerms"
+                },
+                {
+                    "v": "s_Ntt6eTn94",
+                    "t": "Subnet Mask - Explained"
+                },
+                {
+                    "v": "bQ8sdpGQu8c",
+                    "t": "Free CCNA | Subnetting (Part 1) | Day 13 | CCNA 200-301 Complete Course"
+                },
+                {
+                    "v": "MJIK5E0qHn8",
+                    "t": "How to give ip address to your computer or laptop | ip address in Windows 10 | ncpa.cpl | #shorts"
+                },
+                {
+                    "v": "EpdurNwUXuI",
+                    "t": "How to calculate CIDR notation for subnetting"
+                },
+                {
+                    "v": "ls1mMyfnaC0",
+                    "t": "Compute IP range given CIDR address"
+                },
+                {
+                    "v": "hpZL6hv0bz4",
+                    "t": "13. Subnetting Class A  B Networks"
+                },
+                {
+                    "v": "P5t2gN2l7ZI",
+                    "t": "Video Tutorial VLSM"
+                }
+            ]
+        }
+    ]
+}
