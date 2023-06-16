@@ -204,7 +204,7 @@ class Handler:
 
     def save(self, third_dict: dict, dir: str = "", progress_bar=True):
         r"""Download media based on response of `third_query` dict-data-type
-        :param third_dict: Response of `third_query.main()`
+        :param third_dict: Response of `third_query.run()`
         :param dir: Directory for saving the contents
         :param progress_bar: Display download progress bar
         :type third_dict: dict

@@ -121,7 +121,7 @@ def main():
         keyword=h_mult_args(args.keyword),
         author=h_mult_args(args.author),
     )
-    logging.info("Program launched")
+    logging.info(f"Program launched - y2mate v{__version__}")
     if args.input:
         for query in open(args.input).read().strip().split("\n"):
             handler_init_args["query"] = query
