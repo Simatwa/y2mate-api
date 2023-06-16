@@ -152,7 +152,9 @@ api.auto_save(limit=10)
  
 <details>
 <summary>
+	
 For more info run `$ y2mate -h`
+
 </summary>
 
 ```
