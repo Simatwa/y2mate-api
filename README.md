@@ -11,7 +11,7 @@
 <a href="https://pepy.tech/project/livescore-api"><img src="https://static.pepy.tech/personalized-badge/y2mate-api?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Downloads"></a>
 </p>
 
-> Download youtube videos and audios by *title/id/url*
+> Download youtube videos and audios by **title/id/url**
 
 # Installation
 
