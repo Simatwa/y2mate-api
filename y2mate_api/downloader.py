@@ -144,7 +144,6 @@ class Handler:
         :param limit: (Optional) Total videos to be generated
         :param keyword: (Optional) Video keyword
         :param author: (Optional) Author of the videos
-        :type type: str
         :type quality: str
         :type total: int
         :type keyword: str

@@ -85,7 +85,7 @@ class first_query:
 }"""
 
     def __enter__(self, *args, **kwargs):
-        return self.__call__(*args,**kwargs)
+        return self.__call__(*args, **kwargs)
 
     def __exit__(self, *args, **kwargs):
         self.processed = False

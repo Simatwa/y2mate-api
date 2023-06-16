@@ -1,3 +1,4 @@
+argaparse>=1.1
 tqdm==4.64.1
 requests==2.28.2
 colorama==0.4.6
