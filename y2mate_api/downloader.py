@@ -123,8 +123,9 @@ class Handler:
     def __make_second_query(self):
         r"""Links first query with 3rd query"""
         init_query_two = second_query(self.query_one)
+        x = 0
         if not self.query_one.is_link:
-            for x, video_dict in enumerate(self.vitems):
+            for video_dict in self.vitems:
                 init_query_two.video_dict = video_dict
                 query_2 = init_query_two.main(timeout=self.timeout)
                 if query_2.processed:
@@ -142,7 +143,8 @@ class Handler:
                             continue
                         self.related.append(query_2.related)
                         yield query_2
-                        if x + 1 >= self.total:
+                        x += 1
+                        if x >= self.total:
                             break
                 else:
                     logging.warning(
@@ -158,7 +160,7 @@ class Handler:
                 if self.total == 1:
                     yield query_2
                 else:
-                    for x, video_dict in enumerate(self.vitems):
+                    for video_dict in self.vitems:
                         init_query_two.video_dict = video_dict
                         query_2 = init_query_two.main(timeout=self.timeout)
                         if query_2.processed:
@@ -180,7 +182,8 @@ class Handler:
 
                                 self.related.append(query_2.related)
                                 yield query_2
-                                if x + 1 >= self.total:
+                                x += 1
+                                if x >= self.total:
                                     break
                         else:
                             logging.warning(
