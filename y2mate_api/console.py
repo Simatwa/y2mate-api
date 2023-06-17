@@ -2,7 +2,9 @@ import argparse
 import logging
 from . import __version__, __info__, __disclaimer__
 from .main import utils
-from os import getcwd
+from os import getcwd, remove
+from sys import exit
+from .main import history_path, utils
 
 mp4_qualities = [
     "4k",
@@ -15,6 +17,7 @@ mp4_qualities = [
     "auto",
 ]
 mp3_qualities = ["mp3", "m4a", ".m4a", "128kbps", "192kbps", "328kbps"]
+resolvers = ["m4a", "3gp", "mp4", "mp3"]
 media_qualities = mp4_qualities + mp3_qualities
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s : %(message)s",
@@ -52,6 +55,8 @@ def get_args():
         "-r",
         "--resolver",
         help="Other media formats incase of multiple options - mp4/mp3",
+        choices=resolvers,
+        metavar="|".join(resolvers),
     )
     parser.add_argument(
         "-k",
@@ -97,6 +102,26 @@ def get_args():
         help="Disables download progress bar - %(default)s",
         action="store_true",
     )
+    parser.add_argument(
+        "--ask",
+        help="Confirm before downloading file - %(default)s",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--unique",
+        help="Auto-skip any media that you once dowloaded - %(default)s",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--history",
+        help="Stdout all media metadata ever downloaded - %(default)s",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--clear",
+        help="Clear all download histories - %(default)s",
+        action="store_true",
+    )
     return parser.parse_args()
 
 
@@ -105,11 +130,22 @@ def main():
     args = get_args()
     from . import Handler
 
+    if args.history:
+        print(utils.get_history(dump=True))
+        exit(0)
+    if args.clear:
+        remove(history_path)
+        logging.info("Histories cleared successfully!")
+        exit(0)
     if not args.format:
         raise Exception("You must specify media format [ -f mp3/4]")
     h_mult_args = lambda v: v if not v else " ".join(v)
     handler_init_args = dict(
-        query=h_mult_args(args.query), author=args.author, timeout=args.timeout
+        query=h_mult_args(args.query),
+        author=args.author,
+        timeout=args.timeout,
+        ask=args.ask,
+        unique=args.unique,
     )
     auto_save_args = dict(
         dir=args.dir,
@@ -121,7 +157,7 @@ def main():
         keyword=h_mult_args(args.keyword),
         author=h_mult_args(args.author),
     )
-    logging.info(f"Program launched - y2mate v{__version__}")
+    logging.info(f"y2mate launched - v{__version__}")
     if args.input:
         for query in open(args.input).read().strip().split("\n"):
             handler_init_args["query"] = query

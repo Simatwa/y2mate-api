@@ -18,7 +18,14 @@ from os import path
 
 
 class Handler:
-    def __init__(self, query: str, author: str = None, timeout: int = 30):
+    def __init__(
+        self,
+        query: str,
+        author: str = None,
+        timeout: int = 30,
+        ask: bool = False,
+        unique: bool = False,
+    ):
         r"""Initializes this `class`
         :param query: Video name or youtube link
         :type query: str
@@ -26,14 +33,21 @@ class Handler:
         :type author: str
         :param timeout: (Optional) Http request timeout
         :type timeout: int
+        :param ask: (Optional) Confirm before downloading media
+        :type ask: bool
+        :param unique: (Optional) Ignore previously downloaded media
+        :type ask: bool
         """
         self.query = query
         self.author = author
         self.timeout = timeout
         self.keyword = None
+        self.ask = ask
+        self.unique = unique
         self.vitems = []
         self.related = []
         self.total = 1
+        self.saved_videos = utils.get_history()
 
     def __str__(self):
         return self.query
@@ -72,6 +86,26 @@ class Handler:
         if self.query_one.is_link == False:
             self.vitems.extend(self.__filter_videos(self.query_one.vitems))
 
+    def __verify_item(self, second_query_obj) -> bool:
+        video_id = second_query_obj.vid
+        video_author = second_query_obj.a
+        video_title = second_query_obj.title
+        confirm = lambda choice: True if choice.lower() in ("yes", "y") else False
+        if video_id in self.saved_videos:
+            if self.unique:
+                return False, "Duplicate"
+            if self.ask:
+                choice = input(
+                    f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}? - [y/N] :"
+                )
+                return confirm(choice), "User's choice"
+        if self.ask:
+            choice = input(
+                f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}? - [Y/n] :"
+            )
+            return confirm(choice), "User's choice"
+        return True, "Auto"
+
     def __make_second_query(self):
         r"""Links first query with 3rd query"""
         init_query_two = second_query(self.query_one)
@@ -84,6 +118,12 @@ class Handler:
                         logging.warning(f"Dropping '{query_2.title}' by  '{query_2.a}'")
                         continue
                     else:
+                        yes_download, reason = self.__verify_item(query_2)
+                        if not yes_download:
+                            logging.warning(
+                                f"Skipping '{query_2.title}' by '{query_2.a}' -  Reason : {reason}"
+                            )
+                            continue
                         self.related.append(query_2.related)
                         yield query_2
                         if x + 1 >= self.total:
@@ -115,6 +155,13 @@ class Handler:
                                 )
                                 continue
                             else:
+                                yes_download, reason = self.__verify_item(query_2)
+                                if not yes_download:
+                                    logging.warning(
+                                        f"Skipping `{query_2.title}` by `{query_2.a}` -  Reason : {reason}"
+                                    )
+                                    continue
+
                                 self.related.append(query_2.related)
                                 yield query_2
                                 if x + 1 >= self.total:
@@ -181,7 +228,14 @@ class Handler:
             if format
             else f"{third_dict['title']} {third_dict['vid']}_{third_dict['fquality']}.{third_dict['ftype']}"
         )
-        return fnm
+
+        def sanitize(nm):
+            trash = ["\\", "/", ":", "*", "?", '"', "<", "|", ">"]
+            for val in trash:
+                nm = nm.replace(val, "")
+            return nm
+
+        return sanitize(fnm)
 
     def auto_save(
         self, dir: str = "", iterator: object = None, progress_bar=True, *args, **kwargs
@@ -230,10 +284,12 @@ class Handler:
                         for chunks in resp.iter_content(chunk_size=chunk_size):
                             fh.write(chunks)
                             p_bar.update(chunk_size)
+                    utils.add_history(third_dict)
             else:
                 with open(path.join(dir, filename), "wb") as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size):
                         fh.write(chunks)
-                        p_bar.update(chunk_size)
+                utils.add_history(third_dict)
+                logging.info(f"{filename} - {size_in_mb}MB ✅")
         else:
             logging.error(f"Empty `third_dict` parameter parsed : {third_dict}")

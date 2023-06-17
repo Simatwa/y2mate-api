@@ -1,7 +1,12 @@
 import requests
 import logging
 from time import sleep
+import json
+from os import path, makedirs
+from datetime import datetime
+from appdirs import AppDirs
 
+__prog__ = "y2mate"
 session = requests.session()
 
 headers = {
@@ -15,10 +20,25 @@ session.headers.update(headers)
 
 get_excep = lambda e: e.args[1] if len(e.args) > 1 else e
 
+appdir = AppDirs(__prog__)
+
+if not path.isdir(appdir.user_cache_dir):
+    try:
+        makedirs(appdir.user_cache_dir)
+    except Exception as e:
+        print(
+            f"Error : {get_excep(e)}  while creating site directory - "
+            + appdir.user_cache_dir
+        )
+
+history_path = path.join(appdir.user_cache_dir, "history.json")
+
 
 class utils:
     @staticmethod
     def error_handler(resp=None, exit_on_error=False, log=True):
+        r"""Execption handler decorator"""
+
         def decorator(func):
             def main(*args, **kwargs):
                 try:
@@ -41,13 +61,60 @@ class utils:
 
     @staticmethod
     def get(*args, **kwargs):
+        r"""Sends http get request"""
         resp = session.get(*args, **kwargs)
         return all([resp.ok, "application/json" in resp.headers["content-type"]]), resp
 
     @staticmethod
     def post(*args, **kwargs):
+        r"""Sends http post request"""
         resp = session.post(*args, **kwargs)
         return all([resp.ok, "application/json" in resp.headers["content-type"]]), resp
+
+    @staticmethod
+    def add_history(data: dict) -> None:
+        f"""Adds entry to history
+        :param data: Response of `third query`
+        :type data: dict
+        :rtype: None
+        """
+        try:
+            if not path.isfile(history_path):
+                data1 = {__prog__: []}
+                with open(history_path, "w") as fh:
+                    json.dump(data1, fh)
+            with open(history_path) as fh:
+                saved_data = json.load(fh).get(__prog__)
+            data["datetime"] = str(datetime.now())
+            saved_data.append(data)
+            with open(history_path, "w") as fh:
+                json.dump({__prog__: saved_data}, fh, indent=4)
+        except Exception as e:
+            logging.error(f"Failed to add to history - {get_excep(e)}")
+
+    @staticmethod
+    def get_history(dump: bool = False) -> list:
+        r"""Loads download history
+        :param dump: (Optional) Return whole history as str
+        :type dump: bool
+        :rtype: list|str
+        """
+        try:
+            resp = []
+            if not path.isfile(history_path):
+                data1 = {__prog__: []}
+                with open(history_path, "w") as fh:
+                    json.dump(data1, fh)
+            with open(history_path) as fh:
+                if dump:
+                    return json.dumps(json.load(fh), indent=4)
+                entries = json.load(fh).get(__prog__)
+            for entry in entries:
+                resp.append(entry.get("vid"))
+            return resp
+        except Exception as e:
+            logging.error(f"Failed to load history - {get_excep(e)}")
+            return []
 
 
 class first_query:
@@ -93,7 +160,6 @@ class first_query:
     def __call__(self, timeout: int = 30):
         return self.main(timeout)
 
-    # @utils.error_handler()
     def main(self, timeout=30):
         r"""Sets class attributes
         :param timeout: (Optional) Http requests timeout

@@ -129,6 +129,8 @@ api.auto_save(limit=10)
 - `Handler`
   * author : Video author i.e Youtube Channel
   * timeout : http requests timeout
+  * ask : Confirm before downloading media
+  * unique : Auto-ignore previously downloaded media
 
 - `Handler.run`
   * format : Media format mp4/mp3
@@ -158,48 +160,67 @@ For more info run `$ y2mate -h`
 </summary>
 
 ```
- usage: y2mate [-h] [-v] [-f mp4|mp3]
+usage: y2mate [-h] [-v] [-f mp4|mp3]
               [-q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
-              [-r RESOLVER] [-k [KEYWORD ...]] [-a [AUTHOR ...]]
-              [-l LIMIT] [-d PATH] [-t TIMEOUT] [-i PATH]
-              [--disable-bar]
+              [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]]
+              [-a [AUTHOR ...]] [-l LIMIT] [-d PATH]
+              [-t TIMEOUT] [-i PATH] [--disable-bar]
+              [--ask] [--unique] [--history]
+              [--clear]
               [query ...]
 
 Download youtube videos and audios by title or link
 
 positional arguments:
-  query                 Youtube video title, link or id - None
+  query                 Youtube video title, link or
+                        id - None
 
 options:
-  -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
+  -h, --help            show this help message and
+                        exit
+  -v, --version         show program's version number
+                        and exit
   -f mp4|mp3, --format mp4|mp3
-                        Specify media type - audio/video
+                        Specify media type -
+                        audio/video
   -q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps
                         Media quality -720p
-  -r RESOLVER, --resolver RESOLVER
-                        Other media formats incase of multiple
-                        options - mp4/mp3
+  -r m4a|3gp|mp4|mp3, --resolver m4a|3gp|mp4|mp3
+                        Other media formats incase of
+                        multiple options - mp4/mp3
   -k [KEYWORD ...], --keyword [KEYWORD ...]
-                        Media should contain this keywords -
-                        None
+                        Media should contain this
+                        keywords - None
   -a [AUTHOR ...], --author [AUTHOR ...]
-                        Media author i.e YouTube channel name -
-                        None
+                        Media author i.e YouTube
+                        channel name - None
   -l LIMIT, --limit LIMIT
-                        Total videos to be downloaded - 1
-  -d PATH, --dir PATH   Directory for saving the contents -
-                        /storage/emulated/0/git/Smartwa
+                        Total videos to be downloaded
+                        - 1
+  -d PATH, --dir PATH   Directory for saving the
+                        contents - /storage/emulated/
+                        0/git/Smartwa/y2mate-api
   -t TIMEOUT, --timeout TIMEOUT
                         Http request timeout - 30s
   -i PATH, --input PATH
-                        Path to text file containing query per
-                        line - None
-  --disable-bar         Disables download progress bar - False
+                        Path to text file containing
+                        query per line - None
+  --disable-bar         Disables download progress
+                        bar - False
+  --ask                 Confirm before downloading
+                        file - False
+  --unique              Auto-skip any media that you
+                        once dowloaded - False
+  --history             Stdout all media metadata
+                        ever downloaded - False
+  --clear               Clear all download histories
+                        - False
 
 This script has no official relation with y2mate.com
 ```
 </details>
+
+- Review [CHANGELOG](Docs/CHANGELOG.md) for latest updates.
 
 ## Disclaimer
 

@@ -17,6 +17,7 @@ setup(
         "requests>=2.0.2",
         "tqdm==4.65.0",
         "colorama==0.4.6",
+        "appdirs==1.4.4",
     ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),
