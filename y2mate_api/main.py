@@ -5,6 +5,7 @@ import json
 from os import path, makedirs
 from datetime import datetime
 from appdirs import AppDirs
+from sys import exit
 
 __prog__ = "y2mate"
 session = requests.session()
@@ -42,12 +43,14 @@ class utils:
         def decorator(func):
             def main(*args, **kwargs):
                 try:
-                    return func(*args, **kwargs)
+                    try:
+                        return func(*args, **kwargs)
+                    except (KeyboardInterrupt) as e:
+                        logging.info(f"^KeyboardInterrupt quitting. Goodbye!")
+                        exit(1)
                 except Exception as e:
-                    # import traceback as tb
-
-                    # tb.print_exc()
                     if log:
+                        # logging.exception(e)
                         logging.debug(f"Function ({func.__name__}) : {get_excep(e)}")
                         logging.error(get_excep(e))
                     if exit_on_error:

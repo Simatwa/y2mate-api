@@ -98,6 +98,13 @@ def get_args():
         metavar="PATH",
     )
     parser.add_argument(
+        "-thr",
+        "--thread",
+        help="Download [x] amount of videos/audios at once - 1",
+        type=int,
+        default=0,
+    )
+    parser.add_argument(
         "--disable-bar",
         help="Disables download progress bar - %(default)s",
         action="store_true",
@@ -110,6 +117,11 @@ def get_args():
     parser.add_argument(
         "--unique",
         help="Auto-skip any media that you once dowloaded - %(default)s",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--quiet",
+        help="Not to stdout anything other than logs - %(default)s",
         action="store_true",
     )
     parser.add_argument(
@@ -146,10 +158,12 @@ def main():
         timeout=args.timeout,
         ask=args.ask,
         unique=args.unique,
+        thread=args.thread,
     )
     auto_save_args = dict(
         dir=args.dir,
         progress_bar=args.disable_bar == False,
+        quiet=args.quiet,
         format=args.format,
         quality=args.quality,
         resolver=args.resolver,
@@ -165,4 +179,6 @@ def main():
             Handler(**handler_init_args).auto_save(**auto_save_args)
     else:
         Handler(**handler_init_args).auto_save(**auto_save_args)
-    logging.info("Done downloading mp3/mp4")
+    logging.info(
+        f"Done downloading [{args.limit}] {'audio' if args.format=='mp3' else 'video'}(s)"
+    )

@@ -1,7 +1,10 @@
 from .main import requests, logging, utils, first_query, second_query, third_query
 from tqdm import tqdm
 from colorama import Fore
-from os import path
+from os import path, getcwd
+from threading import Thread
+from getch import getch
+from sys import stdout
 
 """
 - query string
@@ -25,6 +28,7 @@ class Handler:
         timeout: int = 30,
         ask: bool = False,
         unique: bool = False,
+        thread: int = 0,
     ):
         r"""Initializes this `class`
         :param query: Video name or youtube link
@@ -37,6 +41,8 @@ class Handler:
         :type ask: bool
         :param unique: (Optional) Ignore previously downloaded media
         :type ask: bool
+        :param thread: (Optional) Thread the download process through `auto-save` method
+        :type thread int
         """
         self.query = query
         self.author = author
@@ -44,6 +50,7 @@ class Handler:
         self.keyword = None
         self.ask = ask
         self.unique = unique
+        self.thread = thread
         self.vitems = []
         self.related = []
         self.total = 1
@@ -86,6 +93,7 @@ class Handler:
         if self.query_one.is_link == False:
             self.vitems.extend(self.__filter_videos(self.query_one.vitems))
 
+    @utils.error_handler(exit_on_error=True)
     def __verify_item(self, second_query_obj) -> bool:
         video_id = second_query_obj.vid
         video_author = second_query_obj.a
@@ -95,14 +103,20 @@ class Handler:
             if self.unique:
                 return False, "Duplicate"
             if self.ask:
-                choice = input(
-                    f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}? - [y/N] :"
+                stdout.write(
+                    f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [y/N]? :"
                 )
+                stdout.flush()
+                choice = getch()
+                print("\n[*] Ok processing...", end="\r")
                 return confirm(choice), "User's choice"
         if self.ask:
-            choice = input(
-                f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}? - [Y/n] :"
+            stdout.write(
+                f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [Y/n]? :"
             )
+            stdout.flush()
+            choice = getch()
+            print("\n[*] Ok processing...", end="\r")
             return confirm(choice), "User's choice"
         return True, "Auto"
 
@@ -115,13 +129,15 @@ class Handler:
                 query_2 = init_query_two.main(timeout=self.timeout)
                 if query_2.processed:
                     if self.author and not self.author.lower() in query_2.a.lower():
-                        logging.warning(f"Dropping '{query_2.title}' by  '{query_2.a}'")
+                        logging.warning(
+                            f"Dropping {Fore.YELLOW+query_2.title+Fore.RESET} by  {Fore.RED+query_2.a+Fore.RESET}"
+                        )
                         continue
                     else:
                         yes_download, reason = self.__verify_item(query_2)
                         if not yes_download:
                             logging.warning(
-                                f"Skipping '{query_2.title}' by '{query_2.a}' -  Reason : {reason}"
+                                f"Skipping {Fore.YELLOW+query_2.title+Fore.RESET} by {Fore.MAGENTA+query_2.a+Fore.RESET} -  Reason : {Fore.BLUE+reason+Fore.RESET}"
                             )
                             continue
                         self.related.append(query_2.related)
@@ -151,14 +167,14 @@ class Handler:
                                 and not self.author.lower() in query_2.a.lower()
                             ):
                                 logging.warning(
-                                    f"Dropping '{query_2.title}' by  '{query_2.a}'"
+                                    f"Dropping {Fore.YELLOW+query_2.title+Fore.RESET} by  {Fore.RED+query_2.a+Fore.RESET}"
                                 )
                                 continue
                             else:
                                 yes_download, reason = self.__verify_item(query_2)
                                 if not yes_download:
                                     logging.warning(
-                                        f"Skipping `{query_2.title}` by `{query_2.a}` -  Reason : {reason}"
+                                        f"Skipping {Fore.YELLOW+query_2.title+Fore.RESET} by {Fore.MAGENTA+query_2.a+Fore.RESET} -  Reason : {Fore.BLUE+reason+Fore.RESET}"
                                     )
                                     continue
 
@@ -218,7 +234,7 @@ class Handler:
     def generate_filename(self, third_dict: dict, format: str = None) -> str:
         r"""Generate filename based on the response of `third_query`
         :param third_dict: response of `third_query.main()` object
-        :param format: Format for formatting fnm based on `third_dict` keys
+        :param format: (Optional) Format for formatting fnm based on `third_dict` keys
         :type third_dict: dict
         :type format: str
         :rtype: str
@@ -238,32 +254,62 @@ class Handler:
         return sanitize(fnm)
 
     def auto_save(
-        self, dir: str = "", iterator: object = None, progress_bar=True, *args, **kwargs
+        self,
+        dir: str = "",
+        iterator: object = None,
+        progress_bar=True,
+        quiet: bool = False,
+        *args,
+        **kwargs,
     ):
         r"""Query and save all the media
-        :param dir: Path to Directory for saving the media files
-        :param iterator: Function that yields third_query object - `Handler.run`
-        :param progress_bar: Display progress bar
+        :param dir: (Optional) Path to Directory for saving the media files
+        :param iterator: (Optional) Function that yields third_query object - `Handler.run`
+        :param progress_bar: (Optional) Display progress bar
+        :param quiet: (Optional) Not to stdout anything
         :type dir: str
         :type iterator: object
         :type progress_bar: bool
+        :type quiet: bool
         args & kwargs for the iterator
         :rtype: None
         """
         iterator_object = iterator or self.run(*args, **kwargs)
 
-        for entry in iterator_object:
+        for x, entry in enumerate(iterator_object):
 
-            self.save(entry, dir, progress_bar)
+            if self.thread:
+                t1 = Thread(
+                    target=self.save,
+                    args=(
+                        entry,
+                        dir,
+                        False,
+                        quiet,
+                    ),
+                )
+                t1.start()
+                thread_count = x + 1
+                if thread_count % self.thread == 0 or thread_count == self.total:
+                    logging.debug(
+                        f"Waiting for current running threads to finish - thread_count : {thread_count}"
+                    )
+                    t1.join()
+            else:
+                self.save(entry, dir, progress_bar, quiet)
 
-    def save(self, third_dict: dict, dir: str = "", progress_bar=True):
+    def save(
+        self, third_dict: dict, dir: str = "", progress_bar=True, quiet: bool = False
+    ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
-        :param dir: Directory for saving the contents
-        :param progress_bar: Display download progress bar
+        :param dir: (Optional) Directory for saving the contents
+        :param progress_bar: (Optional) Display download progress bar
+        :param quiet: (Optional) Not to stdout anything
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
+        :type quiet: bool
         :rtype: None
         """
         if third_dict:
@@ -272,21 +318,27 @@ class Handler:
             size_in_mb = round(size_in_bits / 1000000, 2)
             chunk_size = 1024
             filename = self.generate_filename(third_dict)
-
+            save_to = path.join(dir, filename)
+            third_dict["saved_to"] = (
+                save_to
+                if save_to.startswith(("/", "C:", "D:"))
+                else path.join(getcwd(), dir, filename)
+            )
             if progress_bar:
-                print(f"{filename}")
+                if not quiet:
+                    print(f"{filename}")
                 with tqdm(
                     total=size_in_bits,
                     bar_format="%s%d MB %s{bar} %s{l_bar}%s"
                     % (Fore.GREEN, size_in_mb, Fore.CYAN, Fore.YELLOW, Fore.RESET),
                 ) as p_bar:
-                    with open(path.join(dir, filename), "wb") as fh:
+                    with open(save_to, "wb") as fh:
                         for chunks in resp.iter_content(chunk_size=chunk_size):
                             fh.write(chunks)
                             p_bar.update(chunk_size)
                     utils.add_history(third_dict)
             else:
-                with open(path.join(dir, filename), "wb") as fh:
+                with open(save_to, "wb") as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size):
                         fh.write(chunks)
                 utils.add_history(third_dict)
