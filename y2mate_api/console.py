@@ -40,8 +40,8 @@ def get_args():
         "-f",
         "--format",
         help="Specify media type - audio/video",
-        choices=["mp4", "mp3"],
-        metavar="mp4|mp3",
+        choices=["mp3", "mp4"],
+        metavar="mp3|mp4",
     )
     parser.add_argument(
         "-q",
@@ -87,7 +87,7 @@ def get_args():
     parser.add_argument(
         "-t",
         "--timeout",
-        help="Http request timeout - %(default)ss",
+        help="Http request timeout in seconds - %(default)s",
         type=int,
         default=30,
     )
@@ -98,6 +98,12 @@ def get_args():
         metavar="PATH",
     )
     parser.add_argument(
+        "-o",
+        "--output",
+        metavar="FORMAT",
+        help="Format for generating filename %%(key)s : [title,vid,fquality,ftype] - %(default)s",
+    )
+    parser.add_argument(
         "-thr",
         "--thread",
         help="Download [x] amount of videos/audios at once - 1",
@@ -106,7 +112,7 @@ def get_args():
     )
     parser.add_argument(
         "--disable-bar",
-        help="Disables download progress bar - %(default)s",
+        help="Disable download progress bar - %(default)s",
         action="store_true",
     )
     parser.add_argument(
@@ -164,6 +170,7 @@ def main():
         dir=args.dir,
         progress_bar=args.disable_bar == False,
         quiet=args.quiet,
+        naming_format=args.output,
         format=args.format,
         quality=args.quality,
         resolver=args.resolver,
@@ -180,5 +187,5 @@ def main():
     else:
         Handler(**handler_init_args).auto_save(**auto_save_args)
     logging.info(
-        f"Done downloading [{args.limit}] {'audio' if args.format=='mp3' else 'video'}(s)"
+        f"Done downloading [{args.limit}] {'audio' if args.format=='mp3' else 'video'}{'' if args.limit==1 else 's'}"
     )

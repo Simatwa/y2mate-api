@@ -239,17 +239,17 @@ class Handler:
             else:
                 logging.error(f"Empty object - {query_two_obj}")
 
-    def generate_filename(self, third_dict: dict, format: str = None) -> str:
+    def generate_filename(self, third_dict: dict, naming_format: str = None) -> str:
         r"""Generate filename based on the response of `third_query`
         :param third_dict: response of `third_query.main()` object
-        :param format: (Optional) Format for formatting fnm based on `third_dict` keys
+        :param naming_format: (Optional) Format for generating filename based on `third_dict` keys
         :type third_dict: dict
-        :type format: str
+        :type naming_format: str
         :rtype: str
         """
         fnm = (
-            f"{format}" % third_dict
-            if format
+            f"{naming_format}" % third_dict
+            if naming_format
             else f"{third_dict['title']} {third_dict['vid']}_{third_dict['fquality']}.{third_dict['ftype']}"
         )
 
@@ -267,6 +267,7 @@ class Handler:
         iterator: object = None,
         progress_bar=True,
         quiet: bool = False,
+        naming_format: str = None,
         *args,
         **kwargs,
     ):
@@ -275,10 +276,12 @@ class Handler:
         :param iterator: (Optional) Function that yields third_query object - `Handler.run`
         :param progress_bar: (Optional) Display progress bar
         :param quiet: (Optional) Not to stdout anything
+        :param naming_format: (Optional) Format for generating filename
         :type dir: str
         :type iterator: object
         :type progress_bar: bool
         :type quiet: bool
+        :type naming_format: str
         args & kwargs for the iterator
         :rtype: None
         """
@@ -294,6 +297,7 @@ class Handler:
                         dir,
                         False,
                         quiet,
+                        naming_format,
                     ),
                 )
                 t1.start()
@@ -304,32 +308,39 @@ class Handler:
                     )
                     t1.join()
             else:
-                self.save(entry, dir, progress_bar, quiet)
+                self.save(entry, dir, progress_bar, quiet, naming_format)
 
     def save(
-        self, third_dict: dict, dir: str = "", progress_bar=True, quiet: bool = False
+        self,
+        third_dict: dict,
+        dir: str = "",
+        progress_bar=True,
+        quiet: bool = False,
+        naming_format: str = None,
     ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
         :param dir: (Optional) Directory for saving the contents
         :param progress_bar: (Optional) Display download progress bar
         :param quiet: (Optional) Not to stdout anything
+        :param naming_format: (Optional) Format for generating filename
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
         :type quiet: bool
+        :type naming_format: str
         :rtype: None
         """
         if third_dict:
             resp = requests.get(third_dict["dlink"], stream=True)
-            size_in_bits = int(resp.headers["content-length"])
+            size_in_bits = int(resp.headers.get("content-length", 1000000000000))
             size_in_mb = round(size_in_bits / 1000000, 2)
             chunk_size = 1024
-            filename = self.generate_filename(third_dict)
+            filename = self.generate_filename(third_dict, naming_format)
             save_to = path.join(dir, filename)
             third_dict["saved_to"] = (
                 save_to
-                if save_to.startswith(("/", "C:", "D:"))
+                if any([save_to.startswith("/"), ":" in save_to])
                 else path.join(getcwd(), dir, filename)
             )
             if progress_bar:
