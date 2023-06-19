@@ -53,6 +53,7 @@ class Handler:
         self.thread = thread
         self.vitems = []
         self.related = []
+        self.dropped = []
         self.total = 1
         self.saved_videos = utils.get_history()
 
@@ -129,6 +130,8 @@ class Handler:
                 init_query_two.video_dict = video_dict
                 query_2 = init_query_two.main(timeout=self.timeout)
                 if query_2.processed:
+                    if query_2.vid in self.dropped:
+                        continue
                     if self.author and not self.author.lower() in query_2.a.lower():
                         logging.warning(
                             f"Dropping {Fore.YELLOW+query_2.title+Fore.RESET} by  {Fore.RED+query_2.a+Fore.RESET}"
@@ -140,6 +143,7 @@ class Handler:
                             logging.warning(
                                 f"Skipping {Fore.YELLOW+query_2.title+Fore.RESET} by {Fore.MAGENTA+query_2.a+Fore.RESET} -  Reason : {Fore.BLUE+reason+Fore.RESET}"
                             )
+                            self.dropped.append(query_2.vid)
                             continue
                         self.related.append(query_2.related)
                         yield query_2
@@ -178,6 +182,7 @@ class Handler:
                                     logging.warning(
                                         f"Skipping {Fore.YELLOW+query_2.title+Fore.RESET} by {Fore.MAGENTA+query_2.a+Fore.RESET} -  Reason : {Fore.BLUE+reason+Fore.RESET}"
                                     )
+                                    self.dropped.append(query_2.vid)
                                     continue
 
                                 self.related.append(query_2.related)

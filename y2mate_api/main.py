@@ -88,7 +88,7 @@ class utils:
                     json.dump(data1, fh)
             with open(history_path) as fh:
                 saved_data = json.load(fh).get(__prog__)
-            data["datetime"] = str(datetime.now())
+            data["datetime"] = datetime.now().strftime("%c")
             saved_data.append(data)
             with open(history_path, "w") as fh:
                 json.dump({__prog__: saved_data}, fh, indent=4)
