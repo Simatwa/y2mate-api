@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://github.com/Simatwa/y2mate-api"><img alt="Github" src="https://img.shields.io/static/v1?logo=github&color=blueviolet&label=Test&message=Passing"/></a>
 <a href="LICENSE"><img alt="License" src="https://img.shields.io/static/v1?logo=GPL&color=Blue&message=MIT&label=License"/></a>
-<a href="https://pypi.org/project/y2mate-api"><img alt="PyPi" src="https://img.shields.io/static/v1?logo=pypi&label=Pypi&message=v0.0.3&color=green"/></a>
+<a href="https://pypi.org/project/y2mate-api"><img alt="PyPi" src="https://img.shields.io/static/v1?logo=pypi&label=Pypi&message=v0.0.4&color=green"/></a>
 <a href="https://github.com/psf/black"><img alt="Black" src="https://img.shields.io/static/v1?logo=Black&label=Code-style&message=Black"/></a>
 <a href="#"><img alt="Passing" src="https://img.shields.io/static/v1?logo=Docs&label=Docs&message=Passing&color=green"/></a>
 <a href="#"><img alt="coverage" src="https://img.shields.io/static/v1?logo=Coverage&label=Coverage&message=90%&color=yellowgreen"/></a>
@@ -131,6 +131,7 @@ api.auto_save(limit=10)
   * timeout : http requests timeout
   * ask : Confirm before downloading media
   * unique : Auto-ignore previously downloaded media
+  * thread : Download (x) value of file at a time.
 
 - `Handler.run`
   * format : Media format mp4/mp3
@@ -148,7 +149,9 @@ api.auto_save(limit=10)
 - `Handler.save`
   * third_dict : Response of `third_query.run()`
   * dir : Directory for saving the contents
-  * progress_bar : Stdout media-name & Display download progress bar
+  * progress_bar : Display download progress bar
+  * quiet : Not to stdout anything
+  * naming_format : Format for generating media filename using the `third_query` response keys
  
 </details>
  
@@ -160,54 +163,63 @@ For more info run `$ y2mate -h`
 </summary>
 
 ```
-usage: y2mate [-h] [-v] [-f mp4|mp3]
+usage: y2mate [-h] [-v] [-f mp3|mp4]
               [-q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
               [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]]
               [-a [AUTHOR ...]] [-l LIMIT] [-d PATH]
-              [-t TIMEOUT] [-i PATH] [-thr THREAD]
-              [--disable-bar] [--ask] [--unique] [--quiet]
-              [--history] [--clear]
+              [-t TIMEOUT] [-i PATH] [-o FORMAT]
+              [-thr THREAD] [--disable-bar] [--ask]
+              [--unique] [--quiet] [--history] [--clear]
               [query ...]
 
 Download youtube videos and audios by title or link
 
 positional arguments:
-  query                 Youtube video title, link or id - None
+  query                 Youtube video title, link or id -
+                        None
 
 options:
   -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
-  -f mp4|mp3, --format mp4|mp3
+  -v, --version         show program's version number and
+                        exit
+  -f mp3|mp4, --format mp3|mp4
                         Specify media type - audio/video
   -q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps
                         Media quality -720p
   -r m4a|3gp|mp4|mp3, --resolver m4a|3gp|mp4|mp3
-                        Other media formats incase of multiple
-                        options - mp4/mp3
+                        Other media formats incase of
+                        multiple options - mp4/mp3
   -k [KEYWORD ...], --keyword [KEYWORD ...]
                         Media should contain this keywords -
                         None
   -a [AUTHOR ...], --author [AUTHOR ...]
-                        Media author i.e YouTube channel name -
-                        None
+                        Media author i.e YouTube channel
+                        name - None
   -l LIMIT, --limit LIMIT
                         Total videos to be downloaded - 1
   -d PATH, --dir PATH   Directory for saving the contents -
-                        /storage/emulated/0/git/Smartwa
+                        /storage/emulated/0/git/Smartwa/y2ma
+                        te-api
   -t TIMEOUT, --timeout TIMEOUT
-                        Http request timeout - 30s
+                        Http request timeout in seconds - 30
   -i PATH, --input PATH
-                        Path to text file containing query per
-                        line - None
+                        Path to text file containing query
+                        per line - None
+  -o FORMAT, --output FORMAT
+                        Format for generating filename
+                        %(key)s : [title,vid,fquality,ftype]
+                        - None
   -thr THREAD, --thread THREAD
-                        Download [x] amount of videos/audios at
-                        once - 1
-  --disable-bar         Disables download progress bar - False
-  --ask                 Confirm before downloading file - False
+                        Download [x] amount of videos/audios
+                        at once - 1
+  --disable-bar         Disable download progress bar -
+                        False
+  --ask                 Confirm before downloading file -
+                        False
   --unique              Auto-skip any media that you once
                         dowloaded - False
-  --quiet               Not to stdout anything other than logs -
-                        False
+  --quiet               Not to stdout anything other than
+                        logs - False
   --history             Stdout all media metadata ever
                         downloaded - False
   --clear               Clear all download histories - False

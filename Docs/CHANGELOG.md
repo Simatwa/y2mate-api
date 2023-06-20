@@ -10,3 +10,8 @@
 - Add media filepath in history
 - Zero stdout option while downloading
 
+# v0.0.4
+**What's new?**
+- Specify naming format while saving file
+- Bug fixed : *File size set higher incase it misses `content-length`*
+
