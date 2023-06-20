@@ -194,9 +194,8 @@ class second_query:
         :param item_no: (Optional) Query_one.vitems index
         :type item_no: int
         """
-        if not query_one.processed:
-
-            raise Exception("First query failed")
+        assert query_one.processed, "First query failed"
+        
         self.query_one = query_one
         self.item_no = item_no
         self.processed = False
@@ -316,8 +315,7 @@ class second_query:
 class third_query:
     def __init__(self, query_two: object):
 
-        if not query_two.processed:
-            raise Execption("Unprocessed second_query object parsed")
+        assert query_two.processed, "Unprocessed second_query object parsed"
         self.query_two = query_two
         self.url = "https://www.y2mate.com/mates/convertV2/index"
         self.formats = ["mp4", "mp3"]

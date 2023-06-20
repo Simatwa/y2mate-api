@@ -29,7 +29,6 @@ class test_first_query_using_title(unittest.TestCase):
 
 
 class test_second_query(unittest.TestCase):
-    
     def setUp(self):
         self.video_id = "_z-1fTlSDF0"
         self.first_query = first_query(self.video_id).main()
@@ -64,7 +63,6 @@ class test_second_query(unittest.TestCase):
 
 
 class test_third_query(unittest.TestCase):
-    
     def setUp(self):
         self.video_id = "_z-1fTlSDF0"
         self.first_query = first_query(self.video_id).main()

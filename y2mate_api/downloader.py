@@ -356,11 +356,13 @@ class Handler:
                             fh.write(chunks)
                             p_bar.update(chunk_size)
                     utils.add_history(third_dict)
+                    return save_to
             else:
                 with open(save_to, "wb") as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size):
                         fh.write(chunks)
                 utils.add_history(third_dict)
                 logging.info(f"{filename} - {size_in_mb}MB ✅")
+                return save_to
         else:
             logging.error(f"Empty `third_dict` parameter parsed : {third_dict}")
