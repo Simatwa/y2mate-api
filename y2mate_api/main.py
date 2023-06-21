@@ -195,7 +195,7 @@ class second_query:
         :type item_no: int
         """
         assert query_one.processed, "First query failed"
-        
+
         self.query_one = query_one
         self.item_no = item_no
         self.processed = False
@@ -386,7 +386,7 @@ class third_query:
         if not quality in self.qualities[format]:
 
             raise Exception(
-                "'{quality}' is not in supported qualities - {self.qualities[format]}"
+                f"'{quality}' is not in supported qualities - {self.qualities[format]}"
             )
         items = self.query_two.video if format == "mp4" else self.query_two.audio
         hunted = []
