@@ -31,7 +31,7 @@ class TestDownload(unittest.TestCase):
             )
         self.assertIsInstance(audio_path, str)
         self.assertTrue(os.path.isfile(audio_path))
-        #Tests audio format
+        # Tests audio format
         self.assertIn("128", audio_path)
         self.assertIn(video_id, audio_path)
         self.assertTrue(audio_path.endswith("mp3"))
@@ -42,7 +42,7 @@ class TestDownload(unittest.TestCase):
             video_path = self.handler.save(video_third_dict, self.dir, False, True)
         self.assertIsInstance(video_path, str)
         self.assertTrue(os.path.isfile(video_path))
-        #Test video format
+        # Test video format
         self.assertIn(video_id, video_path)
         self.assertIn("360", video_path)
         self.assertTrue(video_path.endswith("mp4"))
