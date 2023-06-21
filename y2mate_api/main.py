@@ -435,19 +435,3 @@ class third_query:
                 f"Zero media hunted with params : {{quality : {quality}, format : {format}  }}"
             )
             return {}
-
-
-def main_():
-    # from sys import exit
-    y2 = first_query("Alan walker lonely")  # "https://youtu.be/q88kDdMRVAQ")
-    run1 = y2()
-    run2 = second_query(run1())
-    # print(dir(run2))
-    run3 = third_query(run2()).main(format="mp4", quality="360p")
-    import json
-
-    print(json.dumps(run3, indent=4))
-
-
-if __name__ == "__main__":
-    main_()
