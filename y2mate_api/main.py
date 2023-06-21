@@ -257,10 +257,7 @@ class second_query:
         if self.query_one.is_link:
             return {"v": self.query_one.vid, "t": self.query_one.title}
         all_items = self.query_one.vitems
-        if self.item_no > len(all_items) - 1:
-            raise Exception(
-                f"{self.item_no} is greater than largest item's index :  {len(items)-1}"
-            )
+        assert self.item_no < len(all_items) - 1,"The item_no  is greater than largest item's index -  try lower value"
 
         return self.query_one.vitems[item_no or self.item_no]
 
@@ -379,15 +376,10 @@ class third_query:
             resolver = "mp4" if format == "mp4" else "mp3"
         if format == "mp3" and quality == "720p":
             quality = "128kbps"
-        if not format in self.formats:
+        assert format in self.formats,f"'{format}' is not in supported formats - {self.formats}"
 
-            raise Exception(f"'{format}' is not in supported formats - {self.formats}")
-
-        if not quality in self.qualities[format]:
-
-            raise Exception(
-                f"'{quality}' is not in supported qualities - {self.qualities[format]}"
-            )
+        assert quality in self.qualities[format],f"'{quality}' is not in supported qualities - {self.qualities[format]}"
+     
         items = self.query_two.video if format == "mp4" else self.query_two.audio
         hunted = []
         for key in items.keys():
@@ -409,7 +401,7 @@ class third_query:
                             return (False, {})
                         else:
                             logging.debug(
-                                f"Converting video  : sleeping for 5s - round {repeat_count}"
+                                f"Converting video  : sleeping for 5s - round {repeat_count+1}"
                             )
                             sleep(5)
                             repeat_count += 1

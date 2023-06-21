@@ -332,6 +332,9 @@ class Handler:
         :rtype: None
         """
         if third_dict:
+            assert third_dict.get("dlink"), "The video selected does not support that quality, try lower qualities."
+            if third_dict.get("mess"):
+            	logging.warning(third_dict.get("mess"))
             resp = requests.get(third_dict["dlink"], stream=True)
             size_in_bits = int(resp.headers.get("content-length", 1000000000000))
             size_in_mb = round(size_in_bits / 1000000, 2)
