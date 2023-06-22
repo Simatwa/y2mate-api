@@ -434,7 +434,7 @@ class third_query:
             else:
                 logging.debug(f"{resp.headers.get('content-type')} - {resp.content}")
                 logging.error(
-                    f"Third query failed - [{resp.status_code} : {resp.reason}"
+                    f"Third query failed - [{resp.status_code} : {resp.reason}]"
                 )
                 return {}
         else:

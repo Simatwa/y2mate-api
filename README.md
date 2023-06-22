@@ -35,8 +35,7 @@ pip install y2mate-api
 ```sh
 git clone https://github.com/Simatwa/y2mate-api.git
 cd y2mate-api
-python setup.py build
-python setup.py install
+pip install .
 ```
 
 # Usage 
@@ -165,10 +164,10 @@ For more info run `$ y2mate -h`
 
 ```
 usage: y2mate [-h] [-v] [-f mp3|mp4]
-              [-q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
+              [-q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
               [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]]
               [-a [AUTHOR ...]] [-l LIMIT] [-d PATH]
-              [-t TIMEOUT] [-i PATH] [-o FORMAT]
+              [-t TIMEOUT] [-c CHUNK] [-i PATH] [-o FORMAT]
               [-thr THREAD] [--disable-bar] [--ask]
               [--unique] [--quiet] [--history] [--clear]
               [query ...]
@@ -185,8 +184,8 @@ options:
                         exit
   -f mp3|mp4, --format mp3|mp4
                         Specify media type - audio/video
-  -q 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|mp3|m4a|.m4a|128kbps|192kbps|328kbps
-                        Media quality -720p
+  -q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps
+                        Media quality - auto
   -r m4a|3gp|mp4|mp3, --resolver m4a|3gp|mp4|mp3
                         Other media formats incase of
                         multiple options - mp4/mp3
@@ -199,17 +198,19 @@ options:
   -l LIMIT, --limit LIMIT
                         Total videos to be downloaded - 1
   -d PATH, --dir PATH   Directory for saving the contents -
-                        /storage/emulated/0/git/Smartwa/y2ma
-                        te-api
+                        /data/data/com.termux/files/home
   -t TIMEOUT, --timeout TIMEOUT
                         Http request timeout in seconds - 30
+  -c CHUNK, --chunk CHUNK
+                        Chunk-size for downloading files in
+                        KB - 256
   -i PATH, --input PATH
                         Path to text file containing query
                         per line - None
   -o FORMAT, --output FORMAT
                         Format for generating filename
                         %(key)s : [title,vid,fquality,ftype]
-                        - None
+                        or 'pretty' - None
   -thr THREAD, --thread THREAD
                         Download [x] amount of videos/audios
                         at once - 1
