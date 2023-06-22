@@ -202,7 +202,7 @@ class Handler:
     def run(
         self,
         format: str = "mp4",
-        quality: str = "720p",
+        quality: str = "auto",
         resolver: str = None,
         limit: int = 1,
         keyword: str = None,
@@ -254,10 +254,10 @@ class Handler:
         )
 
         def sanitize(nm):
-            trash = ["\\", "/", ":", "*", "?", '"', "<", "|", ">"]
+            trash = ["\\", "/", ":", "*", "?", '"', "<", "|", ">","y2mate.com","y2mate com"]
             for val in trash:
                 nm = nm.replace(val, "")
-            return nm
+            return nm.strip()
 
         return sanitize(fnm)
 
@@ -268,6 +268,7 @@ class Handler:
         progress_bar=True,
         quiet: bool = False,
         naming_format: str = None,
+        chunk_size: int = 512,
         *args,
         **kwargs,
     ):
@@ -277,11 +278,13 @@ class Handler:
         :param progress_bar: (Optional) Display progress bar
         :param quiet: (Optional) Not to stdout anything
         :param naming_format: (Optional) Format for generating filename
+        :param chunk_size: (Optional) Chunk_size for downloading files in KB
         :type dir: str
         :type iterator: object
         :type progress_bar: bool
         :type quiet: bool
         :type naming_format: str
+        :type chunk_size: int
         args & kwargs for the iterator
         :rtype: None
         """
@@ -298,6 +301,7 @@ class Handler:
                         False,
                         quiet,
                         naming_format,
+                        chunk_size,
                     ),
                 )
                 t1.start()
@@ -308,7 +312,7 @@ class Handler:
                     )
                     t1.join()
             else:
-                self.save(entry, dir, progress_bar, quiet, naming_format)
+                self.save(entry, dir, progress_bar, quiet, naming_format, chunk_size)
 
     def save(
         self,
@@ -317,6 +321,7 @@ class Handler:
         progress_bar=True,
         quiet: bool = False,
         naming_format: str = None,
+        chunk_size: int = 512,
     ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
@@ -324,11 +329,13 @@ class Handler:
         :param progress_bar: (Optional) Display download progress bar
         :param quiet: (Optional) Not to stdout anything
         :param naming_format: (Optional) Format for generating filename
+        :param chunk_size: (Optional) Chunk_size for downloading files in KB
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
         :type quiet: bool
         :type naming_format: str
+        :type chunk_size: int
         :rtype: None
         """
         if third_dict:
@@ -338,11 +345,12 @@ class Handler:
             if third_dict.get("mess"):
                 logging.warning(third_dict.get("mess"))
             resp = requests.get(third_dict["dlink"], stream=True)
-            size_in_bits = int(resp.headers.get("content-length", 1000000000000))
-            size_in_mb = round(size_in_bits / 1000000, 2)
-            chunk_size = 1024
+            size_in_bytes = int(resp.headers.get("content-length", 1000000000000))
+            size_in_mb = round(size_in_bytes / 1000000, 2)
+            chunk_size_in_bytes = chunk_size * 1024
             filename = self.generate_filename(third_dict, naming_format)
             save_to = path.join(dir, filename)
+
             third_dict["saved_to"] = (
                 save_to
                 if any([save_to.startswith("/"), ":" in save_to])
@@ -352,19 +360,19 @@ class Handler:
                 if not quiet:
                     print(f"{filename}")
                 with tqdm(
-                    total=size_in_bits,
+                    total=size_in_bytes,
                     bar_format="%s%d MB %s{bar} %s{l_bar}%s"
                     % (Fore.GREEN, size_in_mb, Fore.CYAN, Fore.YELLOW, Fore.RESET),
                 ) as p_bar:
                     with open(save_to, "wb") as fh:
-                        for chunks in resp.iter_content(chunk_size=chunk_size):
+                        for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                             fh.write(chunks)
-                            p_bar.update(chunk_size)
+                            p_bar.update(chunk_size_in_bytes)
                     utils.add_history(third_dict)
                     return save_to
             else:
                 with open(save_to, "wb") as fh:
-                    for chunks in resp.iter_content(chunk_size=chunk_size):
+                    for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                         fh.write(chunks)
                 utils.add_history(third_dict)
                 logging.info(f"{filename} - {size_in_mb}MB ✅")

@@ -94,6 +94,13 @@ def get_args():
         default=30,
     )
     parser.add_argument(
+        "-c",
+        "--chunk",
+        help="Chunk-size for downloading files in KB - %(default)s",
+        type=int,
+        default=256,
+    )
+    parser.add_argument(
         "-i",
         "--input",
         help="Path to text file containing query per line - %(default)s",
@@ -103,7 +110,7 @@ def get_args():
         "-o",
         "--output",
         metavar="FORMAT",
-        help="Format for generating filename %%(key)s : [title,vid,fquality,ftype] - %(default)s",
+        help="Format for generating filename %%(key)s : [title,vid,fquality,ftype] or 'pretty' - %(default)s",
     )
     parser.add_argument(
         "-thr",
@@ -172,7 +179,10 @@ def main():
         dir=args.dir,
         progress_bar=args.disable_bar == False,
         quiet=args.quiet,
-        naming_format=args.output,
+        naming_format=f"%(title)s{' - %(fquality)s' if args.format=='mp4' else ''}.%(ftype)s"
+        if str(args.output).lower() == "pretty"
+        else args.output,
+        chunk_size=args.chunk,
         format=args.format,
         quality=args.quality,
         resolver=args.resolver,
@@ -189,5 +199,5 @@ def main():
     else:
         Handler(**handler_init_args).auto_save(**auto_save_args)
     logging.info(
-        f"Done downloading [{args.limit}] {'audio' if args.format=='mp3' else 'video'}{'' if args.limit==1 else 's'}"
+        f"Done downloading ({args.limit}) {'audio' if args.format=='mp3' else 'video'}{'' if args.limit==1 else 's'}"
     )

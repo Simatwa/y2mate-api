@@ -21,3 +21,9 @@
 # v0.0.6
 **What's new?**
 - Select _best_/_worst_ video-quality.
+
+# v0.0.7
+**What's new?**
+- Chunk-size unit in KB
+- Default chunk-size 512KB
+- Enhanced terminal control

@@ -169,7 +169,6 @@ class first_query:
         :param timeout: (Optional) Http requests timeout
         :type timeout: int
         """
-        self.processed = False
         logging.debug(f"Making first query  : {self.payload.get('k_query')}")
         okay_status, resp = utils.post(self.url, data=self.payload, timeout=timeout)
         # print(resp.headers["content-type"])

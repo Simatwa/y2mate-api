@@ -152,6 +152,7 @@ api.auto_save(limit=10)
   * progress_bar : Display download progress bar
   * quiet : Not to stdout anything
   * naming_format : Format for generating media filename using the `third_query` response keys
+  * chunk_size : Size of chunks in KB for downloads
  
 </details>
  
