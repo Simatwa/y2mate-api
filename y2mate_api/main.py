@@ -307,7 +307,7 @@ class second_query:
 
         else:
             logging.debug(f"{resp.headers.get('content-type')} - {resp.content}")
-            logging.error(f"Second query failed - [{resp.status_code} : {resp.reason}")
+            logging.error(f"Second query failed - [{resp.status_code} : {resp.reason}]")
         return self
 
 

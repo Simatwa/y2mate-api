@@ -15,3 +15,6 @@
 - Specify naming format while saving file
 - Bug fixed : *File size set higher incase it misses `content-length`*
 
+# v0.0.5
+- Minor updates
+
