@@ -15,6 +15,8 @@ mp4_qualities = [
     "240p",
     "144p",
     "auto",
+    "best",
+    "worst",
 ]
 mp3_qualities = ["mp3", "m4a", ".m4a", "128kbps", "192kbps", "328kbps"]
 resolvers = ["m4a", "3gp", "mp4", "mp3"]
@@ -46,10 +48,10 @@ def get_args():
     parser.add_argument(
         "-q",
         "--quality",
-        help="Media quality -%(default)s",
+        help="Media quality - %(default)s",
         choices=media_qualities,
         metavar="|".join(media_qualities),
-        default="720p",
+        default="auto",
     )
     parser.add_argument(
         "-r",

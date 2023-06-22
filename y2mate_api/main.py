@@ -46,6 +46,7 @@ class utils:
                     try:
                         return func(*args, **kwargs)
                     except (KeyboardInterrupt) as e:
+                        print()
                         logging.info(f"^KeyboardInterrupt quitting. Goodbye!")
                         exit(1)
                 except Exception as e:
@@ -318,6 +319,7 @@ class third_query:
         self.query_two = query_two
         self.url = "https://www.y2mate.com/mates/convertV2/index"
         self.formats = ["mp4", "mp3"]
+        self.qualities_plus = ["best", "worst"]
         self.qualities = {
             self.formats[0]: [
                 "4k",
@@ -328,7 +330,8 @@ class third_query:
                 "240p",
                 "144p",
                 "auto",
-            ],
+            ]
+            + self.qualities_plus,
             self.formats[1]: ["mp3", "m4a", ".m4a", "128kbps", "192kbps", "328kbps"],
         }
 
@@ -361,7 +364,7 @@ class third_query:
     def main(
         self,
         format: str = "mp4",
-        quality="720p",
+        quality="auto",
         resolver: str = None,
         timeout: int = 30,
     ):
@@ -369,14 +372,14 @@ class third_query:
         :param format: (Optional) Media format mp4/mp3
         :param quality: (Optional) Media qualiy such as 720p
         :param resolver: (Optional) Additional format info : [m4a,3gp,mp4,mp3]
-        :param timeour: (Optional) Http requests timeout
+        :param timeout: (Optional) Http requests timeout
         :type type: str
         :type quality: str
         :type timeout: int
         """
         if not resolver:
             resolver = "mp4" if format == "mp4" else "mp3"
-        if format == "mp3" and quality == "720p":
+        if format == "mp3" and quality == "auto":
             quality = "128kbps"
         assert (
             format in self.formats
@@ -388,9 +391,16 @@ class third_query:
 
         items = self.query_two.video if format == "mp4" else self.query_two.audio
         hunted = []
-        for key in items.keys():
-            if items[key].get("q") == quality:
-                hunted.append(items[key])
+        if quality in self.qualities_plus:
+            keys = list(items.keys())
+            if quality == self.qualities_plus[0]:
+                hunted.append(items[keys[0]])
+            else:
+                hunted.append(items[keys[len(keys) - 2]])
+        else:
+            for key in items.keys():
+                if items[key].get("q") == quality:
+                    hunted.append(items[key])
         if len(hunted) > 1:
             for entry in hunted:
                 if entry.get("f") == resolver:

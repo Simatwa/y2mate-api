@@ -18,3 +18,6 @@
 # v0.0.5
 - Minor updates
 
+# v0.0.6
+**What's new?**
+- Select _best_/_worst_ video-quality.
