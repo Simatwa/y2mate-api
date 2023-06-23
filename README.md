@@ -1,4 +1,4 @@
-# y2mate-api
+<h1 align="center"># y2mate-api</h1>
 
 <p align="center">
 <a href="https://github.com/Simatwa/y2mate-api"><img alt="Github" src="https://img.shields.io/static/v1?logo=github&color=blueviolet&label=Test&message=Passing"/></a>

@@ -254,7 +254,19 @@ class Handler:
         )
 
         def sanitize(nm):
-            trash = ["\\", "/", ":", "*", "?", '"', "<", "|", ">","y2mate.com","y2mate com"]
+            trash = [
+                "\\",
+                "/",
+                ":",
+                "*",
+                "?",
+                '"',
+                "<",
+                "|",
+                ">",
+                "y2mate.com",
+                "y2mate com",
+            ]
             for val in trash:
                 nm = nm.replace(val, "")
             return nm.strip()
