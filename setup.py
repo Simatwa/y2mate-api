@@ -1,17 +1,21 @@
 from setuptools import setup
-from y2mate_api import __version__, __author__, __repo__, __info__
+
+version = "0.0.8"
+info = "Download youtube videos and audios by title or link"
+author = "Smartwa"
+repo = "https://github.com/Simatwa/y2mate-api"
 
 setup(
     name="y2mate-api",
     packages=["y2mate_api"],
-    version=__version__,
+    version=version,
     license="MIT",
-    author=__author__,
-    maintainer=__author__,
+    author=author,
+    maintainer=author,
     author_email="smartwacaleb@gmail.com",
-    description=__info__,
-    url=__repo__,
-    project_urls={"Bug Report": f"{__repo__}/issues/new"},
+    description=info,
+    url=repo,
+    project_urls={"Bug Report": f"{repo}/issues/new"},
     install_requires=[
         "argparse>=1.1",
         "requests>=2.0.2",
