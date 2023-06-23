@@ -1,1 +1,1 @@
-y2mate-api>=0.0.7
+y2mate-api==0.0.8
