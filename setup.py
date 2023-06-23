@@ -17,12 +17,12 @@ setup(
     url=repo,
     project_urls={"Bug Report": f"{repo}/issues/new"},
     install_requires=[
-        "argparse>=1.1",
-        "requests>=2.0.2",
-        "tqdm==4.65.0",
-        "colorama==0.4.6",
-        "appdirs==1.4.4",
-        "getch==1.0",
+    "argparse>=1.1",
+    "tqdm==4.65.0",
+    "requests==2.28.2",
+    "colorama==0.4.6",
+    "appdirs==1.4.4",
+    "getch==1.0"
     ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),
