@@ -40,7 +40,7 @@ pip install .
 
 # Usage 
 
-`$ y2mate <youtube-link or video id or keyword>`
+`$ y2mate -f <mp3/mp4> <youtube-link or video id or keyword>`
 
 <details>
 <summary>
