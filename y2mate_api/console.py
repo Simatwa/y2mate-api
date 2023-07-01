@@ -125,7 +125,7 @@ def get_args():
         action="store_true",
     )
     parser.add_argument(
-        "--ask",
+        "--confirm",
         help="Confirm before downloading file - %(default)s",
         action="store_true",
     )
@@ -149,6 +149,9 @@ def get_args():
         help="Clear all download histories - %(default)s",
         action="store_true",
     )
+    parser.add_argument(
+        "--play", help="Play media after download - %(default)s", action="store_true"
+    )
     return parser.parse_args()
 
 
@@ -171,7 +174,7 @@ def main():
         query=h_mult_args(args.query),
         author=args.author,
         timeout=args.timeout,
-        ask=args.ask,
+        confirm=args.confirm,
         unique=args.unique,
         thread=args.thread,
     )
@@ -183,6 +186,7 @@ def main():
         if str(args.output).lower() == "pretty"
         else args.output,
         chunk_size=args.chunk,
+        play=args.play,
         format=args.format,
         quality=args.quality,
         resolver=args.resolver,

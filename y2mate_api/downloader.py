@@ -5,6 +5,7 @@ from os import path, getcwd
 from threading import Thread
 from getch import getch
 from sys import stdout
+from click import launch as launch_media
 
 """
 - query string
@@ -26,7 +27,7 @@ class Handler:
         query: str,
         author: str = None,
         timeout: int = 30,
-        ask: bool = False,
+        confirm: bool = False,
         unique: bool = False,
         thread: int = 0,
     ):
@@ -37,10 +38,10 @@ class Handler:
         :type author: str
         :param timeout: (Optional) Http request timeout
         :type timeout: int
-        :param ask: (Optional) Confirm before downloading media
-        :type ask: bool
+        :param confirm: (Optional) Confirm before downloading media
+        :type confirm: bool
         :param unique: (Optional) Ignore previously downloaded media
-        :type ask: bool
+        :type confirm: bool
         :param thread: (Optional) Thread the download process through `auto-save` method
         :type thread int
         """
@@ -48,7 +49,7 @@ class Handler:
         self.author = author
         self.timeout = timeout
         self.keyword = None
-        self.ask = ask
+        self.confirm = confirm
         self.unique = unique
         self.thread = thread
         self.vitems = []
@@ -103,7 +104,7 @@ class Handler:
         if video_id in self.saved_videos:
             if self.unique:
                 return False, "Duplicate"
-            if self.ask:
+            if self.confirm:
                 stdout.write(
                     f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [y/N]? :"
                 )
@@ -111,7 +112,7 @@ class Handler:
                 choice = getch()
                 print("\n[*] Ok processing...", end="\r")
                 return confirm(choice), "User's choice"
-        if self.ask:
+        if self.confirm:
             stdout.write(
                 f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [Y/n]? :"
             )
@@ -281,6 +282,7 @@ class Handler:
         quiet: bool = False,
         naming_format: str = None,
         chunk_size: int = 512,
+        play: bool = False,
         *args,
         **kwargs,
     ):
@@ -291,12 +293,14 @@ class Handler:
         :param quiet: (Optional) Not to stdout anything
         :param naming_format: (Optional) Format for generating filename
         :param chunk_size: (Optional) Chunk_size for downloading files in KB
+        :param play: (Optional) Auto-play the media after download
         :type dir: str
         :type iterator: object
         :type progress_bar: bool
         :type quiet: bool
         :type naming_format: str
         :type chunk_size: int
+        :type play: bool
         args & kwargs for the iterator
         :rtype: None
         """
@@ -314,6 +318,7 @@ class Handler:
                         quiet,
                         naming_format,
                         chunk_size,
+                        play,
                     ),
                 )
                 t1.start()
@@ -324,7 +329,9 @@ class Handler:
                     )
                     t1.join()
             else:
-                self.save(entry, dir, progress_bar, quiet, naming_format, chunk_size)
+                self.save(
+                    entry, dir, progress_bar, quiet, naming_format, chunk_size, play
+                )
 
     def save(
         self,
@@ -334,6 +341,7 @@ class Handler:
         quiet: bool = False,
         naming_format: str = None,
         chunk_size: int = 512,
+        play: bool = False,
     ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
@@ -342,12 +350,14 @@ class Handler:
         :param quiet: (Optional) Not to stdout anything
         :param naming_format: (Optional) Format for generating filename
         :param chunk_size: (Optional) Chunk_size for downloading files in KB
+        :param play: (Optional) Auto-play the media after download
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
         :type quiet: bool
         :type naming_format: str
         :type chunk_size: int
+        :type play: bool
         :rtype: None
         """
         if third_dict:
@@ -368,6 +378,7 @@ class Handler:
                 if any([save_to.startswith("/"), ":" in save_to])
                 else path.join(getcwd(), dir, filename)
             )
+            try_play_media = lambda: launch_media(third_dict["saved_to"]) if play else None
             if progress_bar:
                 if not quiet:
                     print(f"{filename}")
@@ -381,12 +392,14 @@ class Handler:
                             fh.write(chunks)
                             p_bar.update(chunk_size_in_bytes)
                     utils.add_history(third_dict)
+                    try_play_media()
                     return save_to
             else:
                 with open(save_to, "wb") as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                         fh.write(chunks)
                 utils.add_history(third_dict)
+                try_play_media()
                 logging.info(f"{filename} - {size_in_mb}MB ✅")
                 return save_to
         else:

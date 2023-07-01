@@ -27,3 +27,10 @@
 - Chunk-size unit in KB
 - Default chunk-size 512KB
 - Enhanced terminal control
+
+# v0.0.8
+- Minor updates
+
+# v0.0.9
+**What's new?**
+- Auto-play media after download - `optional`
