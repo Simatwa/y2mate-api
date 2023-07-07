@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = "0.0.9"
+version = "1.0.0"
 info = "Download youtube videos and audios by title or link"
 author = "Smartwa"
 repo = "https://github.com/Simatwa/y2mate-api"
@@ -17,13 +17,13 @@ setup(
     url=repo,
     project_urls={"Bug Report": f"{repo}/issues/new"},
     install_requires=[
-    "argparse>=1.1",
-    "tqdm==4.65.0",
-    "requests==2.28.2",
-    "colorama==0.4.6",
-    "appdirs==1.4.4",
-    "getch==1.0",
-    "click==8.1.3",
+        "argparse>=1.1",
+        "tqdm==4.65.0",
+        "requests==2.28.2",
+        "colorama==0.4.6",
+        "appdirs==1.4.4",
+        "getch==1.0",
+        "click==8.1.3",
     ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),

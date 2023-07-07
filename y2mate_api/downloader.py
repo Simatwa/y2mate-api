@@ -1,4 +1,12 @@
-from .main import requests, logging, utils, first_query, second_query, third_query
+from .main import (
+    requests,
+    logging,
+    utils,
+    first_query,
+    second_query,
+    third_query,
+    session,
+)
 from tqdm import tqdm
 from colorama import Fore
 from os import path, getcwd
@@ -6,6 +14,7 @@ from threading import Thread
 from getch import getch
 from sys import stdout
 from click import launch as launch_media
+import warnings
 
 """
 - query string
@@ -367,7 +376,14 @@ class Handler:
             if third_dict.get("mess"):
                 logging.warning(third_dict.get("mess"))
             resp = requests.get(third_dict["dlink"], stream=True)
-            size_in_bytes = int(resp.headers.get("content-length", 1000000000000))
+            default_content_length = 1000000000
+            size_in_bytes = int(
+                resp.headers.get("content-length", default_content_length)
+            )
+            if size_in_bytes == default_content_length:
+                warnings.warn(
+                    f"Seems the media doesn't support that quality try {'.m4a quality' if 'mp3' in third_dict.get('f','str').lower() else 'other qualities'} or resolvers if this warning persist!"
+                )
             size_in_mb = round(size_in_bytes / 1000000, 2)
             chunk_size_in_bytes = chunk_size * 1024
             filename = self.generate_filename(third_dict, naming_format)
@@ -378,7 +394,9 @@ class Handler:
                 if any([save_to.startswith("/"), ":" in save_to])
                 else path.join(getcwd(), dir, filename)
             )
-            try_play_media = lambda: launch_media(third_dict["saved_to"]) if play else None
+            try_play_media = (
+                lambda: launch_media(third_dict["saved_to"]) if play else None
+            )
             if progress_bar:
                 if not quiet:
                     print(f"{filename}")

@@ -34,3 +34,7 @@
 # v0.0.9
 **What's new?**
 - Auto-play media after download - `optional`
+
+# v1.0.0
+**What's new?**
+- User warning on possible download failure
