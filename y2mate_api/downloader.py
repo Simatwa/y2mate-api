@@ -6,6 +6,7 @@ from .main import (
     second_query,
     third_query,
     session,
+    headers,
 )
 from tqdm import tqdm
 from colorama import Fore
@@ -70,10 +71,10 @@ class Handler:
     def __str__(self):
         return self.query
 
-    def __enter__(self):
-        pass
+    def __enter__(self, *args, **kwargs):
+        return self
 
-    def __exit__(self):
+    def __exit__(self, *args, **kwargs):
         self.vitems.clear()
         self.total = 1
 
@@ -375,7 +376,7 @@ class Handler:
             ), "The video selected does not support that quality, try lower qualities."
             if third_dict.get("mess"):
                 logging.warning(third_dict.get("mess"))
-            resp = requests.get(third_dict["dlink"], stream=True)
+            resp = requests.get(third_dict["dlink"], stream=True, headers=headers)
             default_content_length = 1000000000
             size_in_bytes = int(
                 resp.headers.get("content-length", default_content_length)

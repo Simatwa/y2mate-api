@@ -15,6 +15,7 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
     "Accept-Encoding": "gzip, deflate, br",
     "Accept-Language": "en-US,en;q=0.9",
+    "referer": "https://y2mate.com",
 }
 
 session.headers.update(headers)
@@ -277,7 +278,7 @@ class second_query:
     def __enter__(self, *args, **kwargs):
         return self.__main__(*args, **kwargs)
 
-    def __exit__(self):
+    def __exit__(self, *args, **kwargs):
         self.processed = False
 
     def main(self, item_no: int = 0, timeout: int = 30):
@@ -337,10 +338,10 @@ class third_query:
     def __call__(self, *args, **kwargs):
         return self.main(*args, **kwargs)
 
-    def __enter__(self):
+    def __enter__(self, *args, **kwargs):
         return self
 
-    def __exit__(self):
+    def __exit__(self, *args, **kwargs):
         pass
 
     def __str__(self):

@@ -38,3 +38,4 @@
 # v1.0.0
 **What's new?**
 - User warning on possible download failure
+- Fake-headers on download - minimize failures
