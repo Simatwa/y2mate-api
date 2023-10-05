@@ -24,6 +24,7 @@ setup(
         "appdirs==1.4.4",
         "getch==1.0",
         "click==8.1.3",
+        "brotli==1.1.0",
     ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),
