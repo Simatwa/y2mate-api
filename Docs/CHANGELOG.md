@@ -39,3 +39,7 @@
 **What's new?**
 - User warning on possible download failure
 - Fake-headers on download - minimize failures
+
+# v1.0.1
+**What's new?**
+- Auto-handles request encodings _(brotli)_
