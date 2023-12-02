@@ -1,3 +1,7 @@
+<p align="center">
+ <img src="https://github.com/Simatwa/y2mate-api/blob/main/assets/logo.png?raw=true" height="70px" width="70px">
+</p>
+
 <h1 align="center">y2mate-api</h1>
 
 <p align="center">
