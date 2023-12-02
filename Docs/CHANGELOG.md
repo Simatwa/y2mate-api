@@ -43,3 +43,7 @@
 # v1.0.1
 **What's new?**
 - Auto-handles request encodings _(brotli)_
+
+# v1.0.2
+**What's new?**
+- Windows installation failure - *fixed*

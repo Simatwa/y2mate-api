@@ -22,7 +22,6 @@ setup(
         "requests==2.28.2",
         "colorama==0.4.6",
         "appdirs==1.4.4",
-        "getch==1.0",
         "click==8.1.3",
         "brotli==1.1.0",
     ],

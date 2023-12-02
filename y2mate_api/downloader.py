@@ -12,9 +12,8 @@ from tqdm import tqdm
 from colorama import Fore
 from os import path, getcwd
 from threading import Thread
-from getch import getch
 from sys import stdout
-from click import launch as launch_media
+from click import launch as launch_media, confirm as confirm_from_user
 import warnings
 
 """
@@ -115,21 +114,17 @@ class Handler:
             if self.unique:
                 return False, "Duplicate"
             if self.confirm:
-                stdout.write(
-                    f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [y/N]? :"
+                choice = confirm_from_user(
+                    f">> Re-download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}"
                 )
-                stdout.flush()
-                choice = getch()
                 print("\n[*] Ok processing...", end="\r")
-                return confirm(choice), "User's choice"
+                return choice, "User's choice"
         if self.confirm:
-            stdout.write(
-                f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET} - [Y/n]? :"
+            choice = confirm_from_user(
+                f">> Download : {Fore.GREEN+video_title+Fore.RESET} by {Fore.YELLOW+video_author+Fore.RESET}"
             )
-            stdout.flush()
-            choice = getch()
             print("\n[*] Ok processing...", end="\r")
-            return confirm(choice), "User's choice"
+            return choice, "User's choice"
         return True, "Auto"
 
     def __make_second_query(self):
@@ -317,7 +312,6 @@ class Handler:
         iterator_object = iterator or self.run(*args, **kwargs)
 
         for x, entry in enumerate(iterator_object):
-
             if self.thread:
                 t1 = Thread(
                     target=self.save,

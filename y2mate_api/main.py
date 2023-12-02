@@ -46,7 +46,7 @@ class utils:
                 try:
                     try:
                         return func(*args, **kwargs)
-                    except (KeyboardInterrupt) as e:
+                    except KeyboardInterrupt as e:
                         print()
                         logging.info(f"^KeyboardInterrupt quitting. Goodbye!")
                         exit(1)
@@ -314,7 +314,6 @@ class second_query:
 
 class third_query:
     def __init__(self, query_two: object):
-
         assert query_two.processed, "Unprocessed second_query object parsed"
         self.query_two = query_two
         self.url = "https://www.y2mate.com/mates/convertV2/index"
