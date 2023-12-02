@@ -109,7 +109,6 @@ class Handler:
         video_id = second_query_obj.vid
         video_author = second_query_obj.a
         video_title = second_query_obj.title
-        confirm = lambda choice: True if choice.lower() in ("yes", "y") else False
         if video_id in self.saved_videos:
             if self.unique:
                 return False, "Duplicate"
