@@ -154,7 +154,7 @@ class test_third_query(unittest.TestCase):
 
     def test_Test_video_fquality(self):
         """Tests video fquality"""
-        self.assertEqual(self.third_query.get("fquality"), "720p")
+        self.assertEqual(self.third_query.get("fquality"), 720)
 
     def test_affirrm_video_link(self):
         """Tests video link"""
