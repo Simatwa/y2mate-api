@@ -42,6 +42,8 @@ cd y2mate-api
 pip install .
 ```
 
+For Windows users you can as well download the executables from [here](https://github.com/Simatwa/y2mate-api/releases/download/v1.0.2/main.exe)
+
 # Usage 
 
 `$ y2mate -f <mp3/mp4> <youtube-link or video id or keyword>`
@@ -56,7 +58,7 @@ Developer docs
 
 ```py
 from y2mate_api import Handler
-api = Handler("Quantum computing in detail")
+api = Handler("Quantum computing in details")
 for video_metadata in api.run():
 	print(video_metadata)
 """Output
@@ -82,7 +84,7 @@ for video_metadata in api.run():
 
 ```py
 from y2mate_api import Handler
-api = Handler("Quantum computing in detail")
+api = Handler("Quantum computing in details")
 for audio_metadata in api.run(format="mp3"):
 	print(audio_metadata)
 
@@ -111,7 +113,7 @@ for audio_metadata in api.run(format="mp3"):
 
 ```py
 from y2mate_api import Handler
-api = Handler("Quantum computing in detail")
+api = Handler("Quantum computing in details")
 api.auto_save()
 ```
 This will proceed to download the first video found and save it in the `current directory`
