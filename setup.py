@@ -25,13 +25,6 @@ setup(
         "click==8.1.3",
         "brotli==1.1.0",
     ],
-    keywords = [
-        "youtube",
-        "youtube-api",
-        "youtube-dl",
-        "y2mate",
-        "y2mate-api",
-    ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -55,5 +48,13 @@ setup(
             ("y2mate = y2mate_api.console:main"),
         ]
     },
-    keywords=["y2mate", "videos", "video-api", "youtube"],
+    keywords=[
+        "y2mate",
+        "videos",
+        "video-api",
+        "youtube",
+        "youtube-api",
+        "youtube-dl",
+        "y2mate-api",
+    ],
 )
