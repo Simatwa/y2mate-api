@@ -31,7 +31,7 @@ setup(
         "youtube-dl",
         "y2mate",
         "y2mate-api",
-    ]
+    ],
     python_requires=">=3.8",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
