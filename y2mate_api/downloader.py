@@ -433,8 +433,8 @@ class Handler:
             try_play_media = (
                 lambda: launch_media(third_dict["saved_to"]) if play else None
             )
+            saving_mode = "ab" if resume else "wb"
             if progress_bar:
-                saving_mode = "ab" if resume else "wb"
                 if not quiet:
                     print(f"{filename}")
                 with tqdm(
