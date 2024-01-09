@@ -51,3 +51,7 @@
 # v1.0.3
 **What's new?**
 - Resume incomplete downloads
+
+# v1.0.4
+**What's new?**
+- Bug fixed - **resume download**

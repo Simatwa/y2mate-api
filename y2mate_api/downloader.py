@@ -423,7 +423,7 @@ class Handler:
             size_in_mb = (
                 round(size_in_bytes / 1000000, 2) + current_downloaded_size_in_mb
             )
-            chunk_size_in_bytes = (chunk_size * 1024) + current_downloaded_size
+            chunk_size_in_bytes = chunk_size * 1024
 
             third_dict["saved_to"] = (
                 save_to
