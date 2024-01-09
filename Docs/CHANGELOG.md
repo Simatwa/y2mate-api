@@ -47,3 +47,7 @@
 # v1.0.2
 **What's new?**
 - Windows installation failure - *fixed*
+
+# v1.0.3
+**What's new?**
+- Resume incomplete downloads
