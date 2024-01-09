@@ -18,6 +18,16 @@
 
 > Download youtube videos and audios by **title/id/url**
 
+
+## Features
+
+- ⬇️ Download audio/video by title/id/url
+- ⬇️ Download `n` amount of audio/video based on keyword
+- ⬇️ Download `n` amount of audio/video related to a particular video id/url
+- ↩️ Resume incomplete downloads
+- ⚙️ Download audio/video in a specific quality
+
+
 # Installation
 
 - Either of the following ways will get you ready.
@@ -29,6 +39,7 @@
 ```sh
 pip install git+https://github.com/Simatwa/y2mate-api.git
 ```
+
   b. From pypi
 
 ```sh
@@ -50,9 +61,13 @@ For Windows users you can as well download the executables from [here](https://g
 `$ y2mate -f <mp3/mp4> <youtube-link or video id or keyword>`
 
 <details>
+
 <summary>
+
 Developer docs
+
 </summary>
+
 1.Generate download links and other metadata
 
 - Video
@@ -108,6 +123,7 @@ for audio_metadata in api.run(format="mp3"):
 }
 """
 ```
+
 - **Note** : To download the media returned, pass the response to `api.save()`
 
 2. Auto-download media
@@ -117,6 +133,7 @@ from y2mate_api import Handler
 api = Handler("Quantum computing in details")
 api.auto_save()
 ```
+
 This will proceed to download the first video found and save it in the `current directory`
 
 You can as well specify total videos to be downloaded by using `limit` argument.
@@ -128,6 +145,7 @@ api = Handler("https://youtu.be/POPoAjWFkGg")
 api.auto_save(limit=10)
 # This will download the video in path and 9 other videos related to the query specified
 ```
+
 **Note** : You can still use  **video id** such as `POPoAjWFkGg` as query parameter.
 
 ## Other parameters
@@ -160,9 +178,12 @@ api.auto_save(limit=10)
   * naming_format : Format for generating media filename using the `third_query` response keys
   * chunk_size : Size of chunks in KB for downloads
   * play : Auto-play media after downloading 
+  * resume : Resume incomplete download
+
 </details>
  
 <details>
+
 <summary>
 	
 For more info run `$ y2mate -h`
@@ -172,75 +193,59 @@ For more info run `$ y2mate -h`
 ```
 usage: y2mate [-h] [-v] [-f mp3|mp4]
               [-q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
-              [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]]
-              [-a [AUTHOR ...]] [-l LIMIT] [-d PATH]
-              [-t TIMEOUT] [-c CHUNK] [-i PATH]
-              [-o FORMAT] [-thr THREAD] [--disable-bar]
-              [--confirm] [--unique] [--quiet]
-              [--history] [--clear] [--play]
+              [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]] [-a [AUTHOR ...]]
+              [-l LIMIT] [-d PATH] [-t TIMEOUT] [-c CHUNK] [-i PATH]
+              [-o FORMAT] [-thr THREAD] [--disable-bar] [--confirm] [--unique]
+              [--quiet] [--history] [--clear] [--resume] [--play]
               [query ...]
 
 Download youtube videos and audios by title or link
 
 positional arguments:
-  query                 Youtube video title, link or id -
-                        None
+  query                 Youtube video title, link or id - None
 
 options:
   -h, --help            show this help message and exit
-  -v, --version         show program's version number and
-                        exit
+  -v, --version         show program's version number and exit
   -f mp3|mp4, --format mp3|mp4
                         Specify media type - audio/video
   -q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps
                         Media quality - auto
   -r m4a|3gp|mp4|mp3, --resolver m4a|3gp|mp4|mp3
-                        Other media formats incase of
-                        multiple options - mp4/mp3
+                        Other media formats incase of multiple options -
+                        mp4/mp3
   -k [KEYWORD ...], --keyword [KEYWORD ...]
-                        Media should contain this
-                        keywords - None
+                        Media should contain this keywords - None
   -a [AUTHOR ...], --author [AUTHOR ...]
-                        Media author i.e YouTube channel
-                        name - None
+                        Media author i.e YouTube channel name - None
   -l LIMIT, --limit LIMIT
                         Total videos to be downloaded - 1
-  -d PATH, --dir PATH   Directory for saving the contents
-                        - /storage/emulated/0/git/Smartwa
-                        /y2mate-api
+  -d PATH, --dir PATH   Directory for saving the contents -
+                        /home/smartwa/git/Smartwa/I-learn-this
   -t TIMEOUT, --timeout TIMEOUT
-                        Http request timeout in seconds -
-                        30
+                        Http request timeout in seconds - 30
   -c CHUNK, --chunk CHUNK
-                        Chunk-size for downloading files
-                        in KB - 256
+                        Chunk-size for downloading files in KB - 256
   -i PATH, --input PATH
-                        Path to text file containing
-                        query per line - None
+                        Path to text file containing query per line - None
   -o FORMAT, --output FORMAT
-                        Format for generating filename
-                        %(key)s :
-                        [title,vid,fquality,ftype] or
-                        'pretty' - None
+                        Format for generating filename %(key)s :
+                        [title,vid,fquality,ftype] or 'pretty' - None
   -thr THREAD, --thread THREAD
-                        Download [x] amount of
-                        videos/audios at once - 1
-  --disable-bar         Disable download progress bar -
-                        False
-  --confirm             Confirm before downloading file -
-                        False
-  --unique              Auto-skip any media that you once
-                        dowloaded - False
-  --quiet               Not to stdout anything other than
-                        logs - False
-  --history             Stdout all media metadata ever
-                        downloaded - False
-  --clear               Clear all download histories -
-                        False
+                        Download [x] amount of videos/audios at once - 1
+  --disable-bar         Disable download progress bar - False
+  --confirm             Confirm before downloading file - False
+  --unique              Auto-skip any media that you once dowloaded - False
+  --quiet               Not to stdout anything other than logs - False
+  --history             Stdout all media metadata ever downloaded - False
+  --clear               Clear all download histories - False
+  --resume              Resume downloading incomplete downloads
   --play                Play media after download - False
 
 This script has no official relation with y2mate.com
+
 ```
+
 </details>
 
 - Review [CHANGELOG](https://github.com/Simatwa/y2mate-api/blob/main/Docs/CHANGELOG.md) for latest updates.

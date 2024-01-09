@@ -150,6 +150,9 @@ def get_args():
         action="store_true",
     )
     parser.add_argument(
+        "--resume", action="store_true", help="Resume downloading incomplete downloads"
+    )
+    parser.add_argument(
         "--play", help="Play media after download - %(default)s", action="store_true"
     )
     return parser.parse_args()
@@ -193,6 +196,7 @@ def main():
         limit=args.limit,
         keyword=h_mult_args(args.keyword),
         author=h_mult_args(args.author),
+        resume=args.resume,
     )
     logging.info(f"y2mate launched - v{__version__}")
     if args.input:

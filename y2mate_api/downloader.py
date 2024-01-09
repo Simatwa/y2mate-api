@@ -287,6 +287,7 @@ class Handler:
         naming_format: str = None,
         chunk_size: int = 512,
         play: bool = False,
+        resume: bool = False,
         *args,
         **kwargs,
     ):
@@ -298,6 +299,7 @@ class Handler:
         :param naming_format: (Optional) Format for generating filename
         :param chunk_size: (Optional) Chunk_size for downloading files in KB
         :param play: (Optional) Auto-play the media after download
+        :param resume: (Optional) Resume the incomplete download
         :type dir: str
         :type iterator: object
         :type progress_bar: bool
@@ -305,6 +307,7 @@ class Handler:
         :type naming_format: str
         :type chunk_size: int
         :type play: bool
+        :type resume: bool
         args & kwargs for the iterator
         :rtype: None
         """
@@ -322,6 +325,7 @@ class Handler:
                         naming_format,
                         chunk_size,
                         play,
+                        resume,
                     ),
                 )
                 t1.start()
@@ -333,7 +337,14 @@ class Handler:
                     t1.join()
             else:
                 self.save(
-                    entry, dir, progress_bar, quiet, naming_format, chunk_size, play
+                    entry,
+                    dir,
+                    progress_bar,
+                    quiet,
+                    naming_format,
+                    chunk_size,
+                    play,
+                    resume,
                 )
 
     def save(
@@ -345,6 +356,7 @@ class Handler:
         naming_format: str = None,
         chunk_size: int = 512,
         play: bool = False,
+        resume: bool = False,
     ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
@@ -354,6 +366,7 @@ class Handler:
         :param naming_format: (Optional) Format for generating filename
         :param chunk_size: (Optional) Chunk_size for downloading files in KB
         :param play: (Optional) Auto-play the media after download
+        :param resume: (Optional) Resume the incomplete download
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
@@ -361,6 +374,7 @@ class Handler:
         :type naming_format: str
         :type chunk_size: int
         :type play: bool
+        :type resume: bool
         :rtype: None
         """
         if third_dict:
@@ -369,19 +383,47 @@ class Handler:
             ), "The video selected does not support that quality, try lower qualities."
             if third_dict.get("mess"):
                 logging.warning(third_dict.get("mess"))
-            resp = requests.get(third_dict["dlink"], stream=True, headers=headers)
-            default_content_length = 1000000000
+
+            current_downloaded_size = 0
+            current_downloaded_size_in_mb = 0
+            filename = self.generate_filename(third_dict, naming_format)
+            save_to = path.join(dir, filename)
+            mod_headers = headers
+
+            if resume:
+                assert path.exists(save_to), f"File not found in path - '{save_to}'"
+                current_downloaded_size = path.getsize(save_to)
+                # Set the headers to resume download from the last byte
+                mod_headers = {"Range": f"bytes={current_downloaded_size}-"}
+                current_downloaded_size_in_mb = round(
+                    current_downloaded_size / 1000000, 2
+                )  # convert to mb
+
+            resp = requests.get(third_dict["dlink"], stream=True, headers=mod_headers)
+
+            default_content_length = 0
             size_in_bytes = int(
                 resp.headers.get("content-length", default_content_length)
             )
-            if size_in_bytes == default_content_length:
-                warnings.warn(
-                    f"Seems the media doesn't support that quality try {'.m4a quality' if 'mp3' in third_dict.get('f','str').lower() else 'other qualities'} or resolvers if this warning persist!"
-                )
-            size_in_mb = round(size_in_bytes / 1000000, 2)
-            chunk_size_in_bytes = chunk_size * 1024
-            filename = self.generate_filename(third_dict, naming_format)
-            save_to = path.join(dir, filename)
+            if not size_in_bytes:
+                if resume:
+                    raise FileExistsError(
+                        f"Download completed for the file in path - '{save_to}'"
+                    )
+                else:
+                    raise Exception(
+                        f"Cannot download file of content-length {size_in_bytes} bytes"
+                    )
+
+            if resume:
+                assert (
+                    size_in_bytes != current_downloaded_size
+                ), f"Download completed for the file in path - '{save_to}'"
+
+            size_in_mb = (
+                round(size_in_bytes / 1000000, 2) + current_downloaded_size_in_mb
+            )
+            chunk_size_in_bytes = (chunk_size * 1024) + current_downloaded_size
 
             third_dict["saved_to"] = (
                 save_to
@@ -392,14 +434,17 @@ class Handler:
                 lambda: launch_media(third_dict["saved_to"]) if play else None
             )
             if progress_bar:
+                saving_mode = "ab" if resume else "wb"
                 if not quiet:
                     print(f"{filename}")
                 with tqdm(
-                    total=size_in_bytes,
+                    total=size_in_bytes + current_downloaded_size,
                     bar_format="%s%d MB %s{bar} %s{l_bar}%s"
                     % (Fore.GREEN, size_in_mb, Fore.CYAN, Fore.YELLOW, Fore.RESET),
+                    initial=current_downloaded_size,
                 ) as p_bar:
-                    with open(save_to, "wb") as fh:
+                    # p_bar.update(current_downloaded_size)
+                    with open(save_to, saving_mode) as fh:
                         for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                             fh.write(chunks)
                             p_bar.update(chunk_size_in_bytes)
@@ -407,7 +452,7 @@ class Handler:
                     try_play_media()
                     return save_to
             else:
-                with open(save_to, "wb") as fh:
+                with open(save_to, saving_mode) as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                         fh.write(chunks)
                 utils.add_history(third_dict)
