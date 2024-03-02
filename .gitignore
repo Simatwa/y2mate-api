@@ -1,6 +1,7 @@
 *__pycache__
-*dist
-*build
+dist/
+build/
 *.vscode
-*y2mate_api.egg-info
+*.egg-info
 terminal.py
+*.spec

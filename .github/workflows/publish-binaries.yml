@@ -1,0 +1,50 @@
+
+name: Make executables
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Executables for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: Linux
+            artifact_upload_name: Linux
+            asset_name: y2mate-linux-amd64
+          - os: macos-latest
+            artifact_name: MacOS
+            artifact_upload_name: MacOS
+            asset_name: y2mate-macos-amd64
+          - os: windows-latest
+            artifact_name: Windows
+            artifact_upload_name: Windows.exe
+            asset_name: y2mate-windows-amd64.exe
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Install dependencies and y2mate-api
+      run: |
+        python -m pip install --upgrade pip pyinstaller
+        python -m pip install -r requirements.txt
+        python -m pip install .
+    - name: Build executable
+      run: |
+        pyinstaller main.py --onefile --exclude pandas --distpath dist --workpath build --log-level INFO --exclude numpy --exclude matplotlib --exclude PyQt5 --exclude PyQt6 --exclude share --contents-directory .  --noconfirm --name ${{ matrix.artifact_name }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/${{ matrix.artifact_upload_name }}
+        asset_name: ${{ matrix.asset_name }}
+        tag: ${{ github.ref }}
+        overwrite: true
