@@ -35,6 +35,10 @@
 
 - Either of the following ways will get you ready.
 
+Download binaries for your system from [here](https://github.com/Simatwa/y2mate-api/releases/latest).
+
+**OR**
+
 1. Pip
 
   a. From source
