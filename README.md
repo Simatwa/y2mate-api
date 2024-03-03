@@ -9,7 +9,7 @@
 <a href="https://github.com/Simatwa/y2mate-api/actions/workflows/python-test.yml"><img src="https://github.com/Simatwa/y2mate-api/actions/workflows/python-test.yml/badge.svg" alt="Python Test"/></a>
 <a href="LICENSE"><img alt="License" src="https://img.shields.io/static/v1?logo=GPL&color=Blue&message=MIT&label=License"/></a>
 <a href="https://pypi.org/project/y2mate-api"><img alt="PyPi" src="https://img.shields.io/pypi/v/y2mate-api"></a>
-<a href="https://github.com/Simatwa/python-tgpt/releases"><img src="https://img.shields.io/github/v/release/Simatwa/python-tgpt?label=Release&logo=github" alt="Latest release"></img></a>
+<a href="https://github.com/Simatwa/y2mate-api/releases"><img src="https://img.shields.io/github/v/release/Simatwa/y2mate-api?label=Release&logo=github" alt="Latest release"></img></a>
 <a href="https://github.com/Simatwa/y2mate-api/releases"><img src="https://img.shields.io/github/release-date/Simatwa/y2mate-api?label=Release date&logo=github" alt="release date"></img></a>
 <a href="https://github.com/psf/black"><img alt="Black" src="https://img.shields.io/static/v1?logo=Black&label=Code-style&message=Black"/></a>
 <a href="#"><img alt="coverage" src="https://img.shields.io/static/v1?logo=Coverage&label=Coverage&message=90%&color=yellowgreen"/></a>
@@ -17,6 +17,7 @@
 <a href="https://github.com/Simatwa/y2mate-api/actions/workflows/python-publish.yml"><img src="https://github.com/Simatwa/y2mate-api/actions/workflows/python-publish.yml/badge.svg" alt="Python-publish"/></a>
 <a href="https://pepy.tech/project/livescore-api"><img src="https://static.pepy.tech/personalized-badge/y2mate-api?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads" alt="Downloads"></a>
 <a href="https://github.com/Simatwa/y2mate-api/releases/latest"><img src="https://img.shields.io/github/downloads/Simatwa/y2mate-api/total?label=Asset%20Downloads&color=success" alt="Downloads"></img></a>
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com/Simatwa/y2mate-api"/></a>
 </p>
 
 > Download youtube videos and audios by **title/id/url**
