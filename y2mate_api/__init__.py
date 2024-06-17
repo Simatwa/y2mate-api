@@ -1,4 +1,4 @@
-__version__ = "1.0.4"
+__version__ = "1.0.6"
 __prog__ = "y2mate"
 __info__ = "Download youtube videos and audios by title or link"
 __author__ = "Smartwa"
@@ -16,4 +16,5 @@ __all__ = [
     "second_query",
     "third_query",
     "Handler",
+    "appdir"
 ]

@@ -357,6 +357,7 @@ class Handler:
         chunk_size: int = 512,
         play: bool = False,
         resume: bool = False,
+        disable_history=False,
     ):
         r"""Download media based on response of `third_query` dict-data-type
         :param third_dict: Response of `third_query.run()`
@@ -367,6 +368,7 @@ class Handler:
         :param chunk_size: (Optional) Chunk_size for downloading files in KB
         :param play: (Optional) Auto-play the media after download
         :param resume: (Optional) Resume the incomplete download
+        :param disable_history (Optional) Don't save the download to history.
         :type third_dict: dict
         :type dir: str
         :type progress_bar: bool
@@ -375,6 +377,7 @@ class Handler:
         :type chunk_size: int
         :type play: bool
         :type resume: bool
+        :type disable_history: bool
         :rtype: None
         """
         if third_dict:
@@ -448,14 +451,17 @@ class Handler:
                         for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                             fh.write(chunks)
                             p_bar.update(chunk_size_in_bytes)
-                    utils.add_history(third_dict)
+                    if not disable_history:
+                        utils.add_history(third_dict)
                     try_play_media()
                     return save_to
             else:
                 with open(save_to, saving_mode) as fh:
                     for chunks in resp.iter_content(chunk_size=chunk_size_in_bytes):
                         fh.write(chunks)
-                utils.add_history(third_dict)
+                if not disable_history:
+                    utils.add_history(third_dict)
+
                 try_play_media()
                 logging.info(f"{filename} - {size_in_mb}MB ✅")
                 return save_to
