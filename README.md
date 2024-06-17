@@ -192,7 +192,7 @@ api.auto_save(limit=10)
  
 ## Telegram bot
 
-If you're a Telegram user then purpose to checkout [y2mate-bot](https://github.com/y2mate-bot).
+If you're a Telegram user then purpose to checkout [y2mate-bot](https://github.com/Simatwa/y2mate-bot).
 
 <details>
 
