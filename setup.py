@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = "1.0.6"
+version = "1.2.0"
 info = "Download youtube videos and audios by title or link"
 author = "Smartwa"
 repo = "https://github.com/Simatwa/y2mate-api"
@@ -24,8 +24,9 @@ setup(
         "appdirs==1.4.4",
         "click==8.1.3",
         "brotli==1.1.0",
+        "curl_cffi==0.7.2",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     classifiers=[
@@ -42,7 +43,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12"
+        "Programming Language :: Python :: 3.12",
     ],
     entry_points={
         "console_scripts": [

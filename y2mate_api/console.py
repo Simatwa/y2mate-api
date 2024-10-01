@@ -2,7 +2,7 @@ import argparse
 import logging
 from . import __version__, __info__, __disclaimer__
 from .main import utils
-from os import getcwd, remove
+from os import getcwd, remove, getenv
 from sys import exit
 from .main import history_path, utils
 
@@ -113,6 +113,12 @@ def get_args():
         help="Format for generating filename %%(key)s : [title,vid,fquality,ftype] or 'pretty' - %(default)s",
     )
     parser.add_argument(
+        "-cf",
+        "--cf-clearance",
+        help="cf_clearance cookie value for y2mate.com",
+        metavar="COOKIE",
+    )
+    parser.add_argument(
         "-thr",
         "--thread",
         help="Download [x] amount of videos/audios at once - 1",
@@ -185,9 +191,11 @@ def main():
         dir=args.dir,
         progress_bar=args.disable_bar == False,
         quiet=args.quiet,
-        naming_format=f"%(title)s{' - %(fquality)s' if args.format=='mp4' else ''}.%(ftype)s"
-        if str(args.output).lower() == "pretty"
-        else args.output,
+        naming_format=(
+            f"%(title)s{' - %(fquality)s' if args.format=='mp4' else ''}.%(ftype)s"
+            if str(args.output).lower() == "pretty"
+            else args.output
+        ),
         chunk_size=args.chunk,
         play=args.play,
         format=args.format,
@@ -198,6 +206,11 @@ def main():
         author=h_mult_args(args.author),
         resume=args.resume,
     )
+    cf_clearance_value = args.cf_clearance or getenv("Y2MATE_CF_CLEARANCE")
+    if cf_clearance_value:
+        from . import session
+
+        session.cookies.update({"cf_clearance": cf_clearance_value})
     logging.info(f"y2mate launched - v{__version__}")
     if args.input:
         for query in open(args.input).read().strip().split("\n"):

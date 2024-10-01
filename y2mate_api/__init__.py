@@ -9,12 +9,7 @@ from .main import first_query
 from .main import second_query
 from .main import third_query
 from .main import appdir
+from .main import session
 from .downloader import Handler
 
-__all__ = [
-    "first_query",
-    "second_query",
-    "third_query",
-    "Handler",
-    "appdir"
-]
+__all__ = ["first_query", "second_query", "third_query", "Handler", "appdir", "session"]

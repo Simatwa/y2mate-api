@@ -15,6 +15,7 @@ from threading import Thread
 from sys import stdout
 from click import launch as launch_media, confirm as confirm_from_user
 import warnings
+import requests as requests_native
 
 """
 - query string
@@ -402,7 +403,9 @@ class Handler:
                     current_downloaded_size / 1000000, 2
                 )  # convert to mb
 
-            resp = requests.get(third_dict["dlink"], stream=True, headers=mod_headers)
+            resp = requests_native.get(
+                third_dict["dlink"], stream=True, headers=mod_headers
+            )
 
             default_content_length = 0
             size_in_bytes = int(
@@ -433,8 +436,8 @@ class Handler:
                 if any([save_to.startswith("/"), ":" in save_to])
                 else path.join(getcwd(), dir, filename)
             )
-            try_play_media = (
-                lambda: launch_media(third_dict["saved_to"]) if play else None
+            try_play_media = lambda: (
+                launch_media(third_dict["saved_to"]) if play else None
             )
             saving_mode = "ab" if resume else "wb"
             if progress_bar:

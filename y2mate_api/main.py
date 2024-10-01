@@ -1,4 +1,5 @@
-import requests
+# import requests
+from curl_cffi import requests
 import logging
 from time import sleep
 import json
@@ -8,11 +9,11 @@ from appdirs import AppDirs
 from sys import exit
 
 __prog__ = "y2mate"
-session = requests.session()
+session = requests.Session()
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
     "Accept-Encoding": "gzip, deflate, br",
     "Accept-Language": "en-US,en;q=0.9",
     "referer": "https://y2mate.com",
@@ -67,12 +68,14 @@ class utils:
     @staticmethod
     def get(*args, **kwargs):
         r"""Sends http get request"""
+        kwargs["impersonate"] = "chrome"
         resp = session.get(*args, **kwargs)
         return all([resp.ok, "application/json" in resp.headers["content-type"]]), resp
 
     @staticmethod
     def post(*args, **kwargs):
         r"""Sends http post request"""
+        kwargs["impersonate"] = "chrome"
         resp = session.post(*args, **kwargs)
         return all([resp.ok, "application/json" in resp.headers["content-type"]]), resp
 
@@ -183,7 +186,11 @@ class first_query:
             self.processed = True
         else:
             logging.debug(f"{resp.headers.get('content-type')} - {resp.content}")
-            logging.error(f"First query failed - [{resp.status_code} : {resp.reason}")
+            logging.error(f"First query failed - [{resp.status_code} : {resp.reason}]")
+            if session.cookies.get('cf_clearance'):
+                logging.info('Seems like CF-CLEARANCE cookie has expired!')
+            else:
+                logging.info('Try passing CF-CLEARANCE cookie.')
         return self
 
 
@@ -322,6 +329,7 @@ class third_query:
         self.qualities = {
             self.formats[0]: [
                 "4k",
+                "2k",
                 "1080p",
                 "720p",
                 "480p",

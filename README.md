@@ -62,11 +62,53 @@ cd y2mate-api
 pip install .
 ```
 
-For Windows users you can as well download the executables from [here](https://github.com/Simatwa/y2mate-api/releases/download/v1.0.2/main.exe)
-
 # Usage 
 
 `$ y2mate -f <mp3/mp4> <youtube-link or video id or keyword>`
+
+Following the introduction of Cloudflare protection on the host, y2mate.com, you have to authenticate you're a human right from your **Chrome Browser** and then proceed to extract `cf_clearance` cookie value, which will in turn be passed over to the script.
+
+### `cf_clearance` extraction process.
+
+i. Install **Http Tracker** Chrome extension using [this link](https://chromewebstore.google.com/detail/http-tracker/fklakbbaaknbgcedidhblbnhclijnhbi).
+i. Using **Chrome Browswer**, navigate to y2mate.com and pass the bot verification stage.
+ii. Start the *Http Tracker* extension.
+iii. On the search section of y2mate.com, key-in anything and press <kbd>enter</kbd>
+iv. Return to the Http Tracker window and look for any of the recent urls containing `*y2mate.com*` and click it.
+v. Navigate down to the coookies section and copy the value of key `cf_clearance`. In the proceeding guides I will be referring to this value as **CF-CLEARANCE**
+
+![CF-CLEARANCE highlighted](https://github.com/Simatwa/y2mate-api/blob/main/assets/cf_clearance_highlighted.png?raw=true)
+
+> [!IMPORTANT]
+> Since the script impersonates only one browser, you will have to use **Chrome Browser** for *CF-CLEARANCE* extraction process.
+
+The uncompromised usage will be:
+
+`$ y2mate -f <mp3/mp4> -cf <CF-CLEARANCE> <youtube-link or video id or keyword>`
+
+
+To developers:
+
+```python
+from y2mate_api import session
+
+session.cookies.update(
+  {
+    "cf_clearance": cf_clearance_value
+  }
+)
+```
+
+As a workaround to explicitly declaring the CF-CLEARANCE along with other commands, export it to the environment as `Y2MATE_CF_CLEARANCE`.
+
+By doing that, something like this will still get the work done:
+
+`$ y2mate -f <mp3/mp4> <youtube-link or video id or keyword>`
+
+> [!WARNING]
+> The CF-CLEARANCE expires after a short while, consider updating it more frequently.
+
+
 
 <details>
 
@@ -205,10 +247,10 @@ For more info run `$ y2mate -h`
 ```
 usage: y2mate [-h] [-v] [-f mp3|mp4]
               [-q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps]
-              [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]] [-a [AUTHOR ...]]
-              [-l LIMIT] [-d PATH] [-t TIMEOUT] [-c CHUNK] [-i PATH]
-              [-o FORMAT] [-thr THREAD] [--disable-bar] [--confirm] [--unique]
-              [--quiet] [--history] [--clear] [--resume] [--play]
+              [-r m4a|3gp|mp4|mp3] [-k [KEYWORD ...]] [-a [AUTHOR ...]] [-l LIMIT]
+              [-d PATH] [-t TIMEOUT] [-c CHUNK] [-i PATH] [-o FORMAT] [-cf COOKIE]
+              [-thr THREAD] [--disable-bar] [--confirm] [--unique] [--quiet] [--history]
+              [--clear] [--resume] [--play]
               [query ...]
 
 Download youtube videos and audios by title or link
@@ -224,8 +266,7 @@ options:
   -q 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps, --quality 4k|1080p|720p|480p|360p|240p|144p|auto|best|worst|mp3|m4a|.m4a|128kbps|192kbps|328kbps
                         Media quality - auto
   -r m4a|3gp|mp4|mp3, --resolver m4a|3gp|mp4|mp3
-                        Other media formats incase of multiple options -
-                        mp4/mp3
+                        Other media formats incase of multiple options - mp4/mp3
   -k [KEYWORD ...], --keyword [KEYWORD ...]
                         Media should contain this keywords - None
   -a [AUTHOR ...], --author [AUTHOR ...]
@@ -233,7 +274,7 @@ options:
   -l LIMIT, --limit LIMIT
                         Total videos to be downloaded - 1
   -d PATH, --dir PATH   Directory for saving the contents -
-                        /home/smartwa/git/Smartwa/I-learn-this
+                        /home/smartwa/git/smartwa/y2mate-api
   -t TIMEOUT, --timeout TIMEOUT
                         Http request timeout in seconds - 30
   -c CHUNK, --chunk CHUNK
@@ -243,6 +284,8 @@ options:
   -o FORMAT, --output FORMAT
                         Format for generating filename %(key)s :
                         [title,vid,fquality,ftype] or 'pretty' - None
+  -cf COOKIE, --cf-clearance COOKIE
+                        cf_clearance cookie value for y2mate.com
   -thr THREAD, --thread THREAD
                         Download [x] amount of videos/audios at once - 1
   --disable-bar         Disable download progress bar - False

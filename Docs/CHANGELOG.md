@@ -55,3 +55,9 @@
 # v1.0.4
 **What's new?**
 - Bug fixed - **resume download**
+
+# v1.2.0
+**What's new?**
+- Bypass bot verification
+- Impersonate Chrome browser
+- Resolves #2
