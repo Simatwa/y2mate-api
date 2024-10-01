@@ -1,4 +1,4 @@
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __prog__ = "y2mate"
 __info__ = "Download youtube videos and audios by title or link"
 __author__ = "Smartwa"
