@@ -70,12 +70,12 @@ Following the introduction of Cloudflare protection on the host, y2mate.com, you
 
 ### `cf_clearance` extraction process.
 
-i. Install **Http Tracker** Chrome extension using [this link](https://chromewebstore.google.com/detail/http-tracker/fklakbbaaknbgcedidhblbnhclijnhbi).
-i. Using **Chrome Browswer**, navigate to y2mate.com and pass the bot verification stage.
-ii. Start the *Http Tracker* extension.
-iii. On the search section of y2mate.com, key-in anything and press <kbd>enter</kbd>
-iv. Return to the Http Tracker window and look for any of the recent urls containing `*y2mate.com*` and click it.
-v. Navigate down to the coookies section and copy the value of key `cf_clearance`. In the proceeding guides I will be referring to this value as **CF-CLEARANCE**
+1. Install **Http Tracker** Chrome extension using [this link](https://chromewebstore.google.com/detail/http-tracker/fklakbbaaknbgcedidhblbnhclijnhbi).
+2. Using **Chrome Browswer**, navigate to y2mate.com and pass the bot verification stage.
+3. Start the *Http Tracker* extension.
+4. On the search section of y2mate.com, key-in anything and press <kbd>enter</kbd>
+5. Return to the Http Tracker window and look for any of the recent urls containing `*y2mate.com*` and click it.
+6. Navigate down to the coookies section and copy the value of key `cf_clearance`. In the proceeding guides I will be referring to this value as **CF-CLEARANCE**
 
 ![CF-CLEARANCE highlighted](https://github.com/Simatwa/y2mate-api/blob/main/assets/cf_clearance_highlighted.png?raw=true)
 
