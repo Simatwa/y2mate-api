@@ -40,7 +40,7 @@ history_path = path.join(appdir.user_cache_dir, "history.json")
 class utils:
     @staticmethod
     def error_handler(resp=None, exit_on_error=False, log=True):
-        r"""Execption handler decorator"""
+        r"""Exception handler decorator"""
 
         def decorator(func):
             def main(*args, **kwargs):
@@ -187,10 +187,10 @@ class first_query:
         else:
             logging.debug(f"{resp.headers.get('content-type')} - {resp.content}")
             logging.error(f"First query failed - [{resp.status_code} : {resp.reason}]")
-            if session.cookies.get('cf_clearance'):
-                logging.info('Seems like CF-CLEARANCE cookie has expired!')
+            if session.cookies.get("cf_clearance"):
+                logging.info("Seems like CF-CLEARANCE cookie has expired!")
             else:
-                logging.info('Try passing CF-CLEARANCE cookie.')
+                logging.info("Try passing CF-CLEARANCE cookie.")
         return self
 
 

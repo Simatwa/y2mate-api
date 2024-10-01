@@ -108,8 +108,8 @@ class Handler:
     @utils.error_handler(exit_on_error=True)
     def __verify_item(self, second_query_obj) -> bool:
         video_id = second_query_obj.vid
-        video_author = second_query_obj.a
-        video_title = second_query_obj.title
+        video_author = second_query_obj.a or "unknown"
+        video_title = second_query_obj.title or "untitled"
         if video_id in self.saved_videos:
             if self.unique:
                 return False, "Duplicate"
