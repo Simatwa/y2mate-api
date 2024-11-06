@@ -1,20 +1,16 @@
 from .main import (
-    requests,
     logging,
     utils,
     first_query,
     second_query,
     third_query,
-    session,
     headers,
 )
 from tqdm import tqdm
 from colorama import Fore
 from os import path, getcwd
 from threading import Thread
-from sys import stdout
 from click import launch as launch_media, confirm as confirm_from_user
-import warnings
 import requests as requests_native
 
 """
