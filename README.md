@@ -305,6 +305,11 @@ This script has no official relation with y2mate.com
 
 - Review [CHANGELOG](https://github.com/Simatwa/y2mate-api/blob/main/Docs/CHANGELOG.md) for latest updates.
 
+
+## Alternative
+
+- There's [ytube-api](https://github.com/Simatwa/ytube-api) which does the same work as y2mate-api.
+
 ## Disclaimer
 
 This repository is intended for educational and personal use only. The use of this repository for any commercial or illegal purposes is strictly prohibited. The repository owner does not endorse or encourage the downloading or sharing of copyrighted material without permission. The repository owner is not responsible for any misuse of the software or any legal consequences that may arise from such misuse.
