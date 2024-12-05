@@ -71,7 +71,7 @@ Following the introduction of Cloudflare protection on the host, y2mate.com, you
 ### `cf_clearance` extraction process.
 
 1. Install **Http Tracker** Chrome extension using [this link](https://chromewebstore.google.com/detail/http-tracker/fklakbbaaknbgcedidhblbnhclijnhbi).
-2. Using **Chrome Browswer**, navigate to y2mate.com and pass the bot verification stage.
+2. Using **Chrome Browser**, navigate to y2mate.com and pass the bot verification stage.
 3. Start the *Http Tracker* extension.
 4. On the search section of y2mate.com, key-in anything and press <kbd>enter</kbd>
 5. Return to the Http Tracker window and look for any of the recent urls containing `*y2mate.com*` and click it.
@@ -108,7 +108,8 @@ By doing that, something like this will still get the work done:
 > [!WARNING]
 > The CF-CLEARANCE expires after a short while, consider updating it more frequently.
 
-
+> [!TIP]
+> Requests originating from United States are not blocked by Cloudflare security. Using Us proxies might save you from all this loads of cookies etc.
 
 <details>
 
