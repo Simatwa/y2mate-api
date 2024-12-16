@@ -329,7 +329,7 @@ class third_query:
         self.qualities = {
             self.formats[0]: [
                 "4k",
-                "2k",
+                "1440p",
                 "1080p",
                 "720p",
                 "480p",

@@ -414,7 +414,9 @@ class Handler:
                     )
                 else:
                     raise Exception(
-                        f"Cannot download file of content-length {size_in_bytes} bytes"
+                        f"Cannot download file of content-length {size_in_bytes} bytes "
+                        f"-  {resp.headers.get('content-type')} ({resp.status_code}, {resp.reason})"
+                        f" - {resp.url}"
                     )
 
             if resume:

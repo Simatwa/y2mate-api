@@ -8,6 +8,7 @@ from .main import history_path, utils
 
 mp4_qualities = [
     "4k",
+    "1440p",
     "1080p",
     "720p",
     "480p",
